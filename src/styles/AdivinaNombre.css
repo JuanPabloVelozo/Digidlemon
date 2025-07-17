@@ -1,82 +1,138 @@
-﻿/* Contenedor del formulario para posición relativa */
+﻿@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
 .form-container {
     position: relative;
     width: 100%;
-    max-width: 400px;
-    margin-bottom: 20px;
+    max-width: 420px;
+    margin: 0 auto 30px auto;
+    display: flex;
+    flex-direction: row; /* fila para input + botón */
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(58, 143, 183, 0.3);
+    gap: 12px; /* espacio entre input y botón */
 }
 
-/* Estilos para el input de texto */
+.input-wrapper {
+    position: relative;
+    flex-grow: 1;
+}
+
 .input-guess {
     width: 100%;
-    padding: 8px;
-    font-size: 16px;
+    padding: 12px 16px;
+    font-size: 18px;
+    border: 2px solid #3a8fb7;
+    border-radius: 8px 0 0 8px; /* redondeado solo a la izquierda */
+    background-color: #121212;
+    color: #cce7f0;
     box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    outline: none;
 }
 
-/* Lista de sugerencias desplegable */
 .suggestions-list {
-    list-style: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
     margin: 0;
     padding: 0;
-    border: 1px solid #ccc;
-    border-top: none;
-    max-height: 150px;
+    list-style: none;
+    max-height: 180px;
     overflow-y: auto;
-    position: absolute;
-    width: 100%;
-    background: white;
+    background: #121212;
+    border: 2px solid #3a8fb7;
+    border-top: none; /* para parecer continuación del input */
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 15px rgba(58, 143, 183, 0.25);
     z-index: 1000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 0 0 4px 4px;
 }
 
-    /* Cada sugerencia en la lista */
     .suggestions-list li {
-        padding: 6px;
-        cursor: pointer;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
+        padding: 10px 16px;
+        cursor: pointer;
+        color: #cce7f0;
         transition: background-color 0.2s ease;
     }
 
-        /* Hover en la sugerencia para mejor UX */
-        .suggestions-list li:hover {
-            background-color: #f0f0f0;
+        .suggestions-list li:hover,
+        .suggestions-list li:focus {
+            background-color: #225b7a;
         }
 
-    /* Imagen dentro de la sugerencia */
     .suggestions-list img {
+        width: 40px;
+        height: 40px;
         object-fit: contain;
-        border-radius: 4px;
+        border-radius: 6px;
+        box-shadow: 0 0 5px #3a8fb7;
     }
 
-/* Botón de enviar */
 .submit-button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    font-size: 16px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
-    background-color: #007bff;
-    color: white;
+    background-color: #3a8fb7;
+    color: #e6f0f7;
     border: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    border-radius: 0 8px 8px 0; /* redondeado solo a la derecha */
+    box-shadow: 0 6px 12px rgba(58, 143, 183, 0.6);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+    flex-shrink: 0; /* que no se reduzca */
 }
 
-    /* Hover para el botón */
-    .submit-button:hover {
-        background-color: #0056b3;
+    .submit-button:hover,
+    .submit-button:focus {
+        background-color: #2a6a9a;
+        box-shadow: 0 8px 20px rgba(42, 106, 154, 0.8);
+        outline: none;
     }
 
-/* Lista de intentos */
 .attempts-list {
     list-style: none;
     padding-left: 0;
-    max-width: 400px;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #cce7f0;
+    font-size: 16px;
+    text-align: center;
 }
 
-/* Puedes agregar estilos personalizados para ResultadoCard si quieres */
+    .attempts-list > li > div {
+        color: #ff6b6b;
+        font-weight: 700;
+        padding: 10px 0;
+    }
+
+/* Títulos con borde negro y fuente digital */
+h2, h3 {
+    text-align: center;
+    color: #3a8fb7;
+    font-family: 'Orbitron', monospace, sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    /* Simulación de borde negro con multiples sombras */
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+}
+
+/* Scroll para la lista de sugerencias */
+.suggestions-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+    background-color: #3a8fb7;
+    border-radius: 4px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+    background: #121212;
+}

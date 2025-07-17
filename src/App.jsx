@@ -1,10 +1,17 @@
-﻿import { Routes, Route } from "react-router-dom";
+﻿import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import AdivinaNombre from "./pages/AdivinaNombre";
+import "./App.css";
 
 export default function App() {
+    const navigate = useNavigate();
+
     return (
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "20px" }}>
+        <div className="main-container">
+            <div className="logo-container" onClick={() => navigate("/")}>
+                <img src="/images/logo.png" alt="Logo" className="home-logo" />
+            </div>
+
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/adivina-nombre" element={<AdivinaNombre />} />
@@ -12,3 +19,4 @@ export default function App() {
         </div>
     );
 }
+

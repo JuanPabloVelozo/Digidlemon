@@ -1,4 +1,6 @@
-﻿export default function ResultadoCard({ digimon, comparacion }) {
+﻿import "../styles/ResultadoCard.css";
+
+export default function ResultadoCard({ digimon, comparacion }) {
     function icono(ok) {
         return ok ? "✔️" : "❌";
     }
@@ -13,26 +15,54 @@
         if (releaseDateComp.match) return "✔️";
         if (releaseDateComp.direction === "up") return "⬇️";
         if (releaseDateComp.direction === "down") return "⬆️";
-        return "❓"; // Por si direction es indefinida o diferente
+        return "❓";
     }
 
     return (
-        <div style={{ border: "2px solid #aaa", padding: "10px", margin: "10px", width: 260 }}>
-            <h3>{digimon.name}</h3>
-            <img
-                src={digimon.image}
-                alt={digimon.name}
-                width="150"
-                style={{ objectFit: "contain" }}
-            />
-            <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                <li>{icono(comparacion.xAntibody.match)} X-Antibody: {digimon.xAntibody ? "Sí" : "No"}</li>
-                <li>{icono(comparacion.level.match)} Nivel: {digimon.level}</li>
-                <li>{icono(comparacion.attribute.match)} Atributo: {digimon.attribute}</li>
-                <li>{icono(comparacion.type.match)} Tipo: {digimon.type}</li>
-                <li>{iconoField(comparacion.fields)} Fields: {digimon.fields.map(f => f.field).join(", ") || "Ninguno"}</li>
-                <li>{iconoReleaseDate(comparacion.releaseDate)} Release Date: {digimon.releaseDate}</li>
-            </ul>
+        <div className="resultado-card">
+            <div className="resultado-card-item">
+                <img src={digimon.image} alt={digimon.name} />
+            </div>
+
+            <div className="resultado-card-item">
+                <span>{digimon.name}</span>
+            </div>
+
+            <div className="resultado-card-item">
+                <span className="resultado-icon">{icono(comparacion.level.match)}</span>
+                <span>Nivel</span>
+                <span>{digimon.level}</span>
+            </div>
+
+            <div className="resultado-card-item">
+                <span className="resultado-icon">{icono(comparacion.attribute.match)}</span>
+                <span>Atributo</span>
+                <span>{digimon.attribute}</span>
+            </div>
+
+            <div className="resultado-card-item">
+                <span className="resultado-icon">{icono(comparacion.type.match)}</span>
+                <span>Tipo</span>
+                <span>{digimon.type}</span>
+            </div>
+
+            <div className="resultado-card-item">
+                <span className="resultado-icon">{iconoField(comparacion.fields)}</span>
+                <span>Fields</span>
+                <span>{digimon.fields.map(f => f.field).join(", ") || "Ninguno"}</span>
+            </div>
+
+            <div className="resultado-card-item">
+                <span className="resultado-icon">{icono(comparacion.xAntibody.match)}</span>
+                <span>X-Antibody</span>
+                <span>{digimon.xAntibody ? "Sí" : "No"}</span>
+            </div>
+
+            <div className="resultado-card-item">
+                <span className="resultado-icon">{iconoReleaseDate(comparacion.releaseDate)}</span>
+                <span>Release</span>
+                <span>{digimon.releaseDate}</span>
+            </div>
         </div>
     );
 }

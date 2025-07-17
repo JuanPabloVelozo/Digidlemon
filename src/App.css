@@ -1,4 +1,43 @@
-.App h1 {
-    color: #007acc;
-    margin-bottom: 1.5rem;
+﻿.logo-container {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+    cursor: pointer;
 }
+
+.home-logo {
+    width: 400px;
+    transition: transform 0.3s ease;
+    margin: 20px auto 50px auto;
+    display: block;
+
+}
+
+    .home-logo:hover {
+        transform: scale(1.05);
+    }
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    position: relative;
+    color: #fff; /* texto blanco para buen contraste */
+    min-height: 100vh;
+    overflow-x: hidden; /* evitar scroll horizontal innecesario */
+}
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/images/fondo.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: brightness(0.85); /* opcional: oscurece un poco para texto */
+        z-index: -1;
+    }
