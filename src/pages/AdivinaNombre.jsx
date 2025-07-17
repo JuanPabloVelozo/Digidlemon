@@ -13,6 +13,14 @@ export default function AdivinaNombre() {
     const [digimonObjetivo, setDigimonObjetivo] = useState(null); // Digimon que hay que adivinar
     const [error, setError] = useState("");                        // Mensajes de error al cargar datos
     const [suggestions, setSuggestions] = useState([]);           // Lista de sugerencias para autocompletar
+    const nivelesOrden = [                                          //lista de niveles
+        "Baby I",
+        "Baby II",
+        "Child",
+        "Adult",
+        "Perfect",
+        "Ultimate"
+    ];
 
     // Carga la lista de Digimons al montar el componente
     useEffect(() => {
@@ -22,8 +30,8 @@ export default function AdivinaNombre() {
                 setDigimonsDisponibles(list);
 
                 // Establece el Digimon objetivo, en este caso "death-x-mon"
-                const deathXmon = list.find((d) => d.name.toLowerCase() === "death-x-mon");
-                setDigimonObjetivo(deathXmon);
+                const selectDigmon = list.find((d) => d.name.toLowerCase() === "holy angemon");
+                setDigimonObjetivo(selectDigmon);
 
                 setLoading(false);
             })
@@ -47,7 +55,7 @@ export default function AdivinaNombre() {
         // Filtra los digimons disponibles cuyo nombre empieza con el texto ingresado (máximo 5)
         const filtered = digimonsDisponibles
             .filter((d) => d.name.toLowerCase().startsWith(val.toLowerCase()))
-            .slice(0, 5);
+            .slice(0, 10);
 
         setSuggestions(filtered);
     }
@@ -116,9 +124,22 @@ export default function AdivinaNombre() {
 
     // Función que compara características entre dos digimons y retorna objeto con resultados
     function getComparacion(found, objetivo) {
+        const posFound = nivelesOrden.indexOf(found.level);
+        const posObjetivo = nivelesOrden.indexOf(objetivo.level);
+
+        let levelDirection = null;
+        if (posFound !== -1 && posObjetivo !== -1) {
+            if (posFound > posObjetivo) levelDirection = "up";
+            else if (posFound < posObjetivo) levelDirection = "down";
+        }
+
         return {
+            name: { match: found.name.toLowerCase() === objetivo.name.toLowerCase() },
             xAntibody: { match: found.xAntibody === objetivo.xAntibody },
-            level: { match: found.level.toLowerCase() === objetivo.level.toLowerCase() },
+            level: {
+                match: found.level.toLowerCase() === objetivo.level.toLowerCase(),
+                direction: (posFound === -1 || posObjetivo === -1) ? null : levelDirection
+            },
             attribute: { match: found.attribute.toLowerCase() === objetivo.attribute.toLowerCase() },
             type: { match: found.type.toLowerCase() === objetivo.type.toLowerCase() },
             fields: {
@@ -128,7 +149,13 @@ export default function AdivinaNombre() {
             releaseDate: {
                 match: parseInt(found.releaseDate) === parseInt(objetivo.releaseDate),
                 direction:
-                    parseInt(found.releaseDate) > parseInt(objetivo.releaseDate) ? "up" : "down",
+                    isNaN(found.releaseDate) || isNaN(objetivo.releaseDate)
+                        ? null
+                        : parseInt(found.releaseDate) > parseInt(objetivo.releaseDate)
+                            ? "up"
+                            : parseInt(found.releaseDate) < parseInt(objetivo.releaseDate)
+                                ? "down"
+                                : null
             },
         };
     }

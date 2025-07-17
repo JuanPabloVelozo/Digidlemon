@@ -22,7 +22,7 @@
     width: 110px;
     min-height: 100px;
     padding: 8px;
-    margin: 6px; /* margen externo para separación y respiro */
+    margin: 6px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(58, 143, 183, 0.3);
     display: flex;
@@ -31,7 +31,8 @@
     justify-content: center;
     gap: 4px;
     font-size: 0.8rem;
-    overflow: hidden;
+    overflow: visible;
+    position: relative;
     text-overflow: ellipsis;
 }
 
@@ -43,8 +44,57 @@
         box-shadow: 0 0 4px #3a8fb7;
     }
 
-    
-
 .resultado-icon {
     font-size: 1.2rem;
+}
+
+.status-correct {
+    border-color: #4caf50;
+    background-color: rgba(76, 175, 80, 0.3);
+    color: #e6f4ea;
+    font-weight: 600;
+    box-shadow: 0 0 8px #4caf50;
+}
+
+.status-wrong {
+    border-color: #f44336;
+    background-color: rgba(244, 67, 54, 0.3);
+    color: #fbe9e7;
+    font-weight: 600;
+    box-shadow: 0 0 8px #f44336;
+}
+
+.status-partial {
+    border-color: #ffeb3b;
+    background-color: rgba(255, 235, 59, 0.3);
+    color: #fbe9e7;
+    font-weight: 600;
+    box-shadow: 0 0 8px #ffeb3b;
+}
+
+/* Flechas grandes de fondo */
+.resultado-card-item.arrow-up::before,
+.resultado-card-item.arrow-down::before {
+    content: attr(data-arrow);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8rem;
+    color: rgba(244, 67, 54, 0.25); /* un poco más opaco para mejor visibilidad */
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+    /* Ajustes para mejorar nitidez */
+    text-shadow: -1px -1px 0 rgba(244, 67, 54, 0.3), 1px -1px 0 rgba(244, 67, 54, 0.3), -1px 1px 0 rgba(244, 67, 54, 0.3), 1px 1px 0 rgba(244, 67, 54, 0.3);
+    /* Forzar renderizado más nítido */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Asegurar que el contenido quede por encima */
+.resultado-card-item > span {
+    position: relative;
+    z-index: 1;
 }
