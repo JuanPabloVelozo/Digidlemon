@@ -35,7 +35,7 @@
 
     return digimonsConNivel;
 }
-
+//cambio f
 export async function fetchDigimonByName(name) {
     const res = await fetch(`https://digi-api.com/api/v1/digimon/${name}`);
     if (!res.ok) throw new Error("No se encontró el Digimon");
