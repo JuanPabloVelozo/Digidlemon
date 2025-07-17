@@ -98,7 +98,7 @@
 .attempts-list {
     list-style: none;
     padding-left: 0;
-    max-width: 1200px;
+    max-width: 1220px;
     margin: 0 auto;
     color: #cce7f0;
     font-size: 16px;
@@ -108,7 +108,7 @@
     .attempts-list > li > div {
         color: #ff6b6b;
         font-weight: 700;
-        padding: 10px 0;
+        padding: 9px 0;
     }
 
 /* Títulos con borde negro y fuente digital */
@@ -136,3 +136,35 @@ h2, h3 {
 .suggestions-list::-webkit-scrollbar-track {
     background: #121212;
 }
+
+
+.resultados-headers, .attempts-list {
+    min-width: 800px; /* o lo que necesites */
+}
+
+.resultados-headers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #3a8fb7;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px auto;
+    max-width: 1200px;
+    color: #3a8fb7;
+    font-family: 'Orbitron', monospace, sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    text-transform: uppercase;
+    box-shadow: 0 6px 12px rgba(58, 143, 183, 0.3);
+
+}
+
+    .resultados-headers span {
+        width: 120px;
+        text-align: center;
+        margin-right: 30px; /* espacio para el pipe */
+    }
+

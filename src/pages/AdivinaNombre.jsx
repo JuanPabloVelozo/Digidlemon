@@ -189,17 +189,29 @@ export default function AdivinaNombre() {
             </form>
 
             <h3>Intentos:</h3>
-            <ul className="attempts-list">
-                {[...results].reverse().map((r, index) => (
-                    <li key={index}>
-                        {r.error ? (
-                            <div><strong>{r.guess}</strong>: {r.error}</div>
-                        ) : (
-                            <ResultadoCard digimon={r.digimon} comparacion={r.comparacion} />
-                        )}
-                    </li>
-                ))}
-            </ul>
+            <div className="resultados-wrapper">
+                <div className="resultados-headers">
+                    <span>Imagen</span>
+                    <span>Nombre</span>
+                    <span>Nivel</span>
+                    <span>Atributo</span>
+                    <span>Tipo</span>
+                    <span>Fields</span>
+                    <span>X-Antibody</span>
+                    <span>Release Date</span>
+                </div>
+                <ul className="attempts-list">
+                    {[...results].reverse().map((r, index) => (
+                        <li key={index}>
+                            {r.error ? (
+                                <div><strong>{r.guess}</strong>: {r.error}</div>
+                            ) : (
+                                <ResultadoCard digimon={r.digimon} comparacion={r.comparacion} />
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 }
