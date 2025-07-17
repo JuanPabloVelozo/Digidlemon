@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { fetchDigimonList } from "../services/digimonAPI";
 import ResultadoCard from "./ResultadoCard";
+import sha1 from "sha1";
 import "../styles/AdivinaNombre.css";
 
 export default function AdivinaNombre() {
@@ -21,6 +22,7 @@ export default function AdivinaNombre() {
         "Perfect",
         "Ultimate"
     ];
+    const [fecha, setFecha] = useState(new Date());
 
     // Carga la lista de Digimons al montar el componente
     useEffect(() => {
@@ -29,8 +31,16 @@ export default function AdivinaNombre() {
                 setDigimons(list);
                 setDigimonsDisponibles(list);
 
-                // Establece el Digimon objetivo, en este caso "death-x-mon"
-                const selectDigmon = list.find((d) => d.name.toLowerCase() === "holy angemon");
+                // Establece el Digimon objetivo, usando un hash SHA1 basado en la fecha actual y la clave "gordoputo"
+                // Esto asegura que el objetivo sea consistente para todos los jugadores en la misma fecha
+                const cadena_semilla=fecha.toDateString().toLowerCase().trim()+ "gordoputo";//genera semilla
+                
+                const hash = sha1(cadena_semilla);//transforma semilla a hash
+                const entero = parseInt(hash,16);//parsea el hash a entero
+                const numero_digi=(entero%1488)-1;// Obtiene un número entre 0 y 1487 (índices de Digimons)
+                console.log("Número de Digimon seleccionado:", numero_digi+1);//log para comprobar el número seleccionado
+                const selectDigmon = list[numero_digi];// Selecciona el Digimon correspondiente al índice
+
                 setDigimonObjetivo(selectDigmon);
 
                 setLoading(false);
