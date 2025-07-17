@@ -168,3 +168,20 @@ h2, h3 {
         margin-right: 30px; /* espacio para el pipe */
     }
 
+
+
+.status-correct {
+    border-color: #4caf50;
+    background-color: rgba(76, 175, 80, 0.3);
+    color: #e6f4ea;
+    font-weight: 600;
+    box-shadow: 0 0 8px #4caf50;
+}
+
+.status-wrong {
+    border-color: #f44336;
+    background-color: rgba(244, 67, 54, 0.3);
+    color: #fbe9e7;
+    font-weight: 600;
+    box-shadow: 0 0 8px #f44336;
+}

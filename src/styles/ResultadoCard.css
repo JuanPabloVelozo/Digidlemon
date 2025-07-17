@@ -98,3 +98,54 @@
     position: relative;
     z-index: 1;
 }
+
+
+/*este es de descripcionGame*/
+/* Contenedor padre para controlar la alineación */
+.parent-container {
+    display: flex;
+    justify-content: flex-start; /* Cambia a center si quieres centrar todo */
+    align-items: center;
+    padding: 10px;
+}
+
+/* Tarjeta simple del resultado */
+.simple-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra imagen y texto dentro */
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #3a8fb7;
+    border-radius: 12px;
+    padding: 15px;
+    margin-left:220px; /* Controla la separación desde la izquierda */
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 160px;
+    color: #cce7f0;
+    font-family: 'Orbitron', monospace, sans-serif;
+    box-shadow: 0 6px 12px rgba(58, 143, 183, 0.3);
+    transition: transform 0.2s ease;
+    text-align: center;
+}
+
+    .simple-result:hover {
+        transform: scale(1.05);
+    }
+
+    .simple-result img {
+        width: 140px;
+        height: 140px;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 0 4px #3a8fb7;
+    }
+
+    .simple-result span {
+        margin-top: 12px;
+        font-size: 1.4rem;
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    }
+

@@ -1,0 +1,123 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+/* Estilos generales */
+body {
+    font-family: 'Orbitron', monospace, sans-serif;
+    background-color: #121212;
+    color: #cce7f0;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1 {
+    color: #3a8fb7;
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+    margin: 0;
+    line-height: 1.2;
+    text-align: center;
+}
+
+    /* Segundo h1 separado */
+    h1 + h1 {
+        margin-top: 10px;
+    }
+
+/* Contenedor del grupo de botones */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    max-width: 320px;
+    width: 100%;
+    background: rgba(58, 143, 183, 0.2);
+    border: 2px solid #3a8fb7;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(58, 143, 183, 0.4);
+    margin-bottom: 30px;
+}
+
+    /* Botones del menú con iconos */
+    .button-group button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 14px 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: #e6f0f7;
+        background: linear-gradient(145deg, #3a8fb7, #2a6a9a);
+        border: 2px solid #62c1f0;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(58, 143, 183, 0.6), inset 0 0 10px #62c1f0;
+        transition: all 0.3s ease;
+        user-select: none;
+        text-shadow: 1px 1px 2px #000;
+    }
+
+        .button-group button:hover,
+        .button-group button:focus {
+            background: linear-gradient(145deg, #2a6a9a, #1e4f71);
+            box-shadow: 0 6px 15px rgba(42, 106, 154, 0.8), inset 0 0 12px #62c1f0;
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+.button-icon {
+    font-size: 20px;
+    filter: drop-shadow(1px 1px 1px #000);
+}
+
+/* Botón Mostrar/Ocultar lista */
+.toggle-list-button {
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(145deg, #3a8fb7, #2a6a9a);
+    color: #e6f0f7;
+    border: 2px solid #62c1f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(58, 143, 183, 0.6), inset 0 0 10px #62c1f0;
+    transition: all 0.3s ease;
+    user-select: none;
+    max-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+    text-shadow: 1px 1px 2px #000;
+}
+
+    .toggle-list-button:hover,
+    .toggle-list-button:focus {
+        background: linear-gradient(145deg, #2a6a9a, #1e4f71);
+        box-shadow: 0 6px 15px rgba(42, 106, 154, 0.8), inset 0 0 12px #62c1f0;
+        transform: translateY(-2px);
+        outline: none;
+    }
+
+/* Contenedor general */
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 30px auto 0 auto;
+    padding: 30px 20px;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 20px 4px rgba(58, 143, 183, 0.7);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-20px);
+    transition: all 0.3s ease;
+}
