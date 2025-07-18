@@ -5,21 +5,23 @@
     background: rgba(0, 0, 0, 0.6);
     border: 2px solid #3a8fb7;
     border-radius: 10px;
-    padding: 10px;
-    margin: 10px auto;
+    padding: 10px 20px; /* Aumenta el padding lateral */
+    margin: 5px auto;
     max-width: 100%;
     color: #cce7f0;
     font-family: 'Orbitron', monospace, sans-serif;
     box-shadow: 0 6px 12px rgba(58, 143, 183, 0.3);
-    gap: 10px;
-    overflow-x: auto;
+    gap: 3px;
+}
+.resultado-card-item:first-child {
+    margin-left: 14px;
 }
 
 .resultado-card-item {
     background: #121212;
     border: 2px solid #3a8fb7;
     border-radius: 8px;
-    width: 110px;
+    width: 115px;
     min-height: 100px;
     padding: 8px;
     margin: 6px;

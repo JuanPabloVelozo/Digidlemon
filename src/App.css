@@ -10,13 +10,11 @@
     transition: transform 0.3s ease;
     margin: 20px auto 50px auto;
     display: block;
-
 }
 
     .home-logo:hover {
         transform: scale(1.05);
     }
-
 
 body {
     margin: 0;
@@ -24,7 +22,9 @@ body {
     position: relative;
     color: #fff; /* texto blanco para buen contraste */
     min-height: 100vh;
-    overflow-x: hidden; /* evitar scroll horizontal innecesario */
+    /* Evita scroll horizontal en toda la página pero permite scroll en elementos con overflow */
+    overflow-x: visible;
+    max-width: 100vw; /* evita que el body se desborde horizontalmente */
 }
 
     body::before {

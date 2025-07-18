@@ -34,7 +34,7 @@ export default function ResultadoCard({ digimon, comparacion }) {
             </div>
 
             <div className={`resultado-card-item ${icono(comparacion.name?.match)}`}>
-                <span>{digimon.name}</span>
+                <span>{digimon.name.replace(/([^\s])\(/g, "$1 (")}</span>
             </div>
 
             <div className={`resultado-card-item ${iconoReleaseDate(comparacion.level)}`}

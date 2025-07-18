@@ -95,21 +95,7 @@
         outline: none;
     }
 
-.attempts-list {
-    list-style: none;
-    padding-left: 0;
-    max-width: 1220px;
-    margin: 0 auto;
-    color: #cce7f0;
-    font-size: 16px;
-    text-align: center;
-}
 
-    .attempts-list > li > div {
-        color: #ff6b6b;
-        font-weight: 700;
-        padding: 9px 0;
-    }
 
 /* Títulos con borde negro y fuente digital */
 h2, h3 {
@@ -138,8 +124,45 @@ h2, h3 {
 }
 
 
-.resultados-headers, .attempts-list {
-    min-width: 800px; /* o lo que necesites */
+.resultados-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+    transform: rotateX(180deg); /* mantiene scroll arriba */
+}
+
+    /* Scroll personalizado más grueso sin afectar el transform */
+    .resultados-wrapper::-webkit-scrollbar {
+        height: 12px; /* scrollbar más grueso */
+        background-color: rgba(18, 18, 18, 0.8);
+        border-radius: 10px;
+    }
+
+    .resultados-wrapper::-webkit-scrollbar-thumb {
+        background-color: #3a8fb7;
+        border-radius: 10px;
+        box-shadow: 0 0 6px #3a8fb7;
+    }
+
+    .resultados-wrapper::-webkit-scrollbar-track {
+        background-color: rgba(18, 18, 18, 0.4);
+        border-radius: 10px;
+    }
+
+/* Firefox */
+.resultados-wrapper {
+    scrollbar-width: auto; /* auto es más ancho que thin */
+    scrollbar-color: #3a8fb7 rgba(18, 18, 18, 0.4);
+}
+
+.scroll-inner {
+    min-width: 1000px;
+    transform: rotateX(180deg); /* invierte contenido para que se vea normal */
+}
+
+
+.resultados-headers,
+.attempts-list {
+    min-width: 1000px; /* ajusta según lo que necesites */
 }
 
 .resultados-headers {
@@ -151,24 +174,41 @@ h2, h3 {
     border-radius: 10px;
     padding: 10px;
     margin: 10px auto;
-    max-width: 1200px;
     color: #3a8fb7;
     font-family: 'Orbitron', monospace, sans-serif;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     text-transform: uppercase;
     box-shadow: 0 6px 12px rgba(58, 143, 183, 0.3);
-
+    min-width: 977px; /* ancho mínimo igual a la suma de los spans */
+    max-width: 1200px;
+    justify-content: flex-start; /* alinea al inicio para que coincida con la lista */
 }
 
     .resultados-headers span {
         width: 120px;
         text-align: center;
-        margin-right: 30px; /* espacio para el pipe */
+        margin-right: 0; /* mejor sin margen, controla con padding si quieres */
+        padding: 0 15px; /* para separar columnas sin que se desajusten */
     }
 
+.attempts-list {
+    list-style: none;
+    padding-left: 0;
+    max-width: 1220px;
+    margin: 0 auto;
+    color: #cce7f0;
+    font-size: 16px;
+    text-align: center;
+}
 
+    .attempts-list > li > div {
+        color: #ff6b6b;
+        font-weight: 700;
+        padding: 9px 0;
+    }
+       
 
 .status-correct {
     border-color: #4caf50;
