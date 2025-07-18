@@ -3,7 +3,8 @@ import { fetchDigimonList } from "../services/digimonAPI";
 import {
     seleccionarDigimonObjetivo,
     filtrarSugerencias,
-    comparacionBasica
+    comparacionBasica,
+    icono
 } from "../utils/digimonUtils";
 import "../styles/AdivinaNombre.css";
 
@@ -84,11 +85,6 @@ export default function DescripcionGame() {
         setSuggestions([]);
     }
 
-    function icono(comparacion) {
-        if (!comparacion) return "";
-        if (comparacion.name.match) return "status-correct";
-        return "status-wrong";
-    }
 
     if (loading) return <p>Cargando datos...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -143,7 +139,7 @@ export default function DescripcionGame() {
                                 <strong>{r.guess}</strong>: {r.error}
                             </div>
                         ) : (
-                            <div className={`simple-result ${icono(r.comparacion)}`}>
+                                <div className={`simple-result ${icono(r.comparacion)}`}>
                                 <img src={r.digimon.image} alt={r.digimon.name} width={60} height={60} />
                                 <span>{r.digimon.name}</span>
                             </div>

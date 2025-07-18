@@ -3,7 +3,8 @@ import { fetchDigimonList } from "../services/digimonAPI";
 import {
     seleccionarDigimonObjetivo,
     filtrarSugerencias,
-    comparacionBasica
+    comparacionBasica,
+    icono
 } from "../utils/digimonUtils";
 import "../styles/AdivinaNombre.css";
 
@@ -16,7 +17,7 @@ export default function AdivinaSilueta() {
     const [digimonObjetivo, setDigimonObjetivo] = useState(null);
     const [suggestions, setSuggestions] = useState([]);
     const [fecha] = useState(new Date());
-    const [nivelRevelado, setNivelRevelado] = useState(0); // 0-5 niveles
+    const [nivelRevelado, setNivelRevelado] = useState(0); // 0-20 niveles
 
     useEffect(() => {
         fetchDigimonList(0, 1488)
@@ -75,7 +76,7 @@ export default function AdivinaSilueta() {
     }
 
     function aumentarRevelado() {
-        setNivelRevelado((prev) => Math.min(5, prev + 1));
+        setNivelRevelado((prev) => Math.min(50, prev + 1));
     }
 
     function procesarAdivinanza(found) {
@@ -83,7 +84,7 @@ export default function AdivinaSilueta() {
         setResults((prev) => [...prev, { digimon: found, comparacion }]);
 
         if (comparacion.name.match) {
-            setNivelRevelado(5); // Revelado completo si acierta
+            setNivelRevelado(50); // Revelado completo si acierta
         } else {
             aumentarRevelado();
         }
@@ -96,23 +97,37 @@ export default function AdivinaSilueta() {
         setSuggestions([]);
     }
 
+    // Función para obtener desplazamiento basado en la fecha
+    function getTranslateFromDate(date, maxTranslate) {
+        // Fecha como string YYYYMMDD
+        const dateStr = date.toISOString().slice(0, 10).replace(/-/g, "");
+
+        let hash = 0;
+        for (let i = 0; i < dateStr.length; i++) {
+            hash = (hash * 31 + dateStr.charCodeAt(i)) % 1000;
+        }
+
+        const translateX = hash % maxTranslate;
+        const translateY = (hash * 7) % maxTranslate;
+
+        return { translateX, translateY };
+    }
+
     if (loading) return <p>Cargando datos...</p>;
     if (error) return <p>Error: {error}</p>;
     if (!digimonObjetivo) return <p>No se encontró al Digimon objetivo.</p>;
 
-    // Definimos el tamaño del contenedor fijo
-    const containerSize = 250;
-    // Cada nivel revela más área visible (menos zoom y desplazamiento más pequeño)
-    // Nivel 0: Muy zoom + desplazamiento lejos del centro
-    // Nivel 5: imagen completa
-    // Ajustamos escala y translate para simular "revelar"
+    const containerSize = 300;
+    const maxNivel = 50;
+    const maxTranslate = 90;
 
-    const maxNivel = 5;
-    const scale = 3 - (nivelRevelado * 0.4); // escala va de 3x a 1x
-    const maxTranslate = 80; // px máximo que se mueve la imagen desde centro
-    // Se mueve menos cuanto más revelado
-    const translateX = (maxNivel - nivelRevelado) * (maxTranslate / maxNivel);
-    const translateY = (maxNivel - nivelRevelado) * (maxTranslate / maxNivel);
+    const scale = 3 - (nivelRevelado * (2 / maxNivel));
+
+    const { translateX: baseTranslateX, translateY: baseTranslateY } = getTranslateFromDate(fecha, maxTranslate);
+
+    // Ajustamos el translate según el nivel revelado para "acercar" la imagen
+    const translateX = (maxNivel - nivelRevelado) * (baseTranslateX / maxNivel);
+    const translateY = (maxNivel - nivelRevelado) * (baseTranslateY / maxNivel);
 
     return (
         <div className="container">
@@ -187,7 +202,7 @@ export default function AdivinaSilueta() {
                                 <strong>{r.guess}</strong>: {r.error}
                             </div>
                         ) : (
-                            <div className="simple-result">
+                            <div className={`simple-result ${icono(r.comparacion)}`}>
                                 <img src={r.digimon.image} alt={r.digimon.name} width={60} height={60} />
                                 <span>{r.digimon.name}</span>
                             </div>

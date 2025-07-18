@@ -86,3 +86,10 @@ export function compararFields(userFields, targetFields) {
     const target = targetFields.map(f => f.field.toLowerCase()).sort();
     return JSON.stringify(user) === JSON.stringify(target);
 }
+
+
+export function icono(comparacion) {
+    if (!comparacion) return "";
+    if (comparacion.name.match) return "status-correct";
+    return "status-wrong";
+}
