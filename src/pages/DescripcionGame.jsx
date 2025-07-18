@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { fetchDigimonList } from "../services/digimonAPI";
 import "../styles/AdivinaNombre.css";
-
+import sha1 from "sha1";
 export default function DescripcionGame() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -10,13 +10,22 @@ export default function DescripcionGame() {
     const [results, setResults] = useState([]);
     const [digimonObjetivo, setDigimonObjetivo] = useState(null);
     const [suggestions, setSuggestions] = useState([]);
+    const [fecha, setFecha] = useState(new Date());
+
 
     useEffect(() => {
         fetchDigimonList(0, 1488)
             .then((list) => {
                 setDigimonsDisponibles(list);
-                const objetivo = list.find((d) => d.name.toLowerCase() === "agumon");
-                setDigimonObjetivo(objetivo);
+                const cadena_semilla=fecha.toDateString().toLowerCase().trim()+ "jpputo";//genera semilla
+                
+                const hash = sha1(cadena_semilla);//transforma semilla a hash
+                const entero = parseInt(hash,16);//parsea el hash a entero
+                const numero_digi=(entero%1488)-1;// Obtiene un número entre 0 y 1487 (índices de Digimons)
+                console.log("Número de Digimon seleccionado:", numero_digi+1);//log para comprobar el número seleccionado
+                const selectDigmon = list[numero_digi];// Selecciona el Digimon correspondiente al índice
+
+                setDigimonObjetivo(selectDigmon);
                 setLoading(false);
             })
             .catch((err) => {
