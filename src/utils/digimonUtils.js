@@ -7,13 +7,22 @@ export const nivelesOrden = [
 
 // Selecciona digimon objetivo usando fecha y clave
 export function seleccionarDigimonObjetivo(digimons, fecha, claveSemilla) {
-    const cadenaSemilla = fecha.toDateString().toLowerCase().trim() + claveSemilla;
-    const hash = sha1(cadenaSemilla);
-    const entero = parseInt(hash, 16);
-    const index = (entero % digimons.length) - 1;
-    const seleccionado = digimons[index < 0 ? 0 : index];
-
-    console.log("Digimon objetivo seleccionado:", seleccionado);
+    let cadenaSemilla = fecha.toDateString().toLowerCase().trim() + claveSemilla;//crea la semilla inicial
+    let seleccionado=0;//let para digimon seleccionado
+    let validar=true;//inicia ciclo de seleccion para un digimon valido
+    while (validar) {
+        validar=false
+        let hash = sha1(cadenaSemilla);//transforma la semilla en un hash
+        let entero = parseInt(hash, 16);//convierte el hash a entero
+        let index = (entero % digimons.length) - 1;//obtiene un indice del hash
+        seleccionado = digimons[index < 0 ? 0 : index];//selecciona el digimon de la lista
+        // Verifica que el digimon tenga datos completos
+        if(seleccionado.skillDescrip==="Desconocido" || seleccionado.description==="Desconocido"){
+            cadenaSemilla += cadenaSemilla;//en caso de que el digimon no tenga datos completos, se agrega la semilla a si misma
+            validar=true;
+        }
+    }
+    console.log("Digimon objetivo seleccionado:", seleccionado.name);
 
     return seleccionado;
 }
