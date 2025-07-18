@@ -7,7 +7,7 @@ import {
 } from "../utils/digimonUtils";
 import "../styles/AdivinaNombre.css";
 
-export default function DescripcionGame() {
+export default function AdivinaSilueta() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -16,12 +16,13 @@ export default function DescripcionGame() {
     const [digimonObjetivo, setDigimonObjetivo] = useState(null);
     const [suggestions, setSuggestions] = useState([]);
     const [fecha] = useState(new Date());
+    const [nivelRevelado, setNivelRevelado] = useState(0); // 0-5 niveles
 
     useEffect(() => {
         fetchDigimonList(0, 1488)
             .then((list) => {
                 setDigimonsDisponibles(list);
-                const objetivo = seleccionarDigimonObjetivo(list, fecha, "furryhumi");
+                const objetivo = seleccionarDigimonObjetivo(list, fecha, "manqueque");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
             })
@@ -66,15 +67,26 @@ export default function DescripcionGame() {
             setResults((prev) => [...prev, { guess: guess.trim(), error: "No encontrado" }]);
             setGuess("");
             setSuggestions([]);
+            aumentarRevelado();
             return;
         }
 
         procesarAdivinanza(found);
     }
 
+    function aumentarRevelado() {
+        setNivelRevelado((prev) => Math.min(5, prev + 1));
+    }
+
     function procesarAdivinanza(found) {
         const comparacion = comparacionBasica(found, digimonObjetivo);
         setResults((prev) => [...prev, { digimon: found, comparacion }]);
+
+        if (comparacion.name.match) {
+            setNivelRevelado(5); // Revelado completo si acierta
+        } else {
+            aumentarRevelado();
+        }
 
         setDigimonsDisponibles((prev) =>
             prev.filter((d) => d.name.toLowerCase() !== found.name.toLowerCase())
@@ -84,27 +96,57 @@ export default function DescripcionGame() {
         setSuggestions([]);
     }
 
-    function icono(comparacion) {
-        if (!comparacion) return "";
-        if (comparacion.name.match) return "status-correct";
-        return "status-wrong";
-    }
-
     if (loading) return <p>Cargando datos...</p>;
     if (error) return <p>Error: {error}</p>;
     if (!digimonObjetivo) return <p>No se encontró al Digimon objetivo.</p>;
-    if (!digimonObjetivo.description || digimonObjetivo.description === "Desconocido")
-        return <p>El Digimon objetivo no tiene descripción válida.</p>;
+
+    // Definimos el tamaño del contenedor fijo
+    const containerSize = 250;
+    // Cada nivel revela más área visible (menos zoom y desplazamiento más pequeño)
+    // Nivel 0: Muy zoom + desplazamiento lejos del centro
+    // Nivel 5: imagen completa
+    // Ajustamos escala y translate para simular "revelar"
+
+    const maxNivel = 5;
+    const scale = 3 - (nivelRevelado * 0.4); // escala va de 3x a 1x
+    const maxTranslate = 80; // px máximo que se mueve la imagen desde centro
+    // Se mueve menos cuanto más revelado
+    const translateX = (maxNivel - nivelRevelado) * (maxTranslate / maxNivel);
+    const translateY = (maxNivel - nivelRevelado) * (maxTranslate / maxNivel);
 
     return (
         <div className="container">
-            <h2>¿De quién es el ataque?</h2>
+            <h2>¿Quién es este Digimon?</h2>
 
-            <div className="description-box">
-                <h4>{digimonObjetivo.skill}</h4>
-                <p>{digimonObjetivo.skillDescrip}</p>
+            <div
+                className="silueta-box"
+                style={{
+                    width: containerSize,
+                    height: containerSize,
+                    overflow: "hidden",
+                    margin: "0 auto",
+                    borderRadius: 12,
+                    border: "2px solid #333",
+                    position: "relative",
+                    backgroundColor: "#ddd",
+                }}
+            >
+                <img
+                    src={digimonObjetivo.image}
+                    alt="Silueta del Digimon"
+                    style={{
+                        width: containerSize,
+                        height: containerSize,
+                        objectFit: "cover",
+                        transformOrigin: "center",
+                        transform: `scale(${scale}) translate(${translateX}px, ${translateY}px)`,
+                        transition: "transform 0.5s ease",
+                        userSelect: "none",
+                        pointerEvents: "none",
+                    }}
+                    draggable={false}
+                />
             </div>
-
 
             <form onSubmit={handleSubmit} className="form-container">
                 <input
@@ -145,7 +187,7 @@ export default function DescripcionGame() {
                                 <strong>{r.guess}</strong>: {r.error}
                             </div>
                         ) : (
-                            <div className={`simple-result ${icono(r.comparacion)}`}>
+                            <div className="simple-result">
                                 <img src={r.digimon.image} alt={r.digimon.name} width={60} height={60} />
                                 <span>{r.digimon.name}</span>
                             </div>

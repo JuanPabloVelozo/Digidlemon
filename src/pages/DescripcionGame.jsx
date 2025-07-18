@@ -1,7 +1,12 @@
 ﻿import { useEffect, useState } from "react";
 import { fetchDigimonList } from "../services/digimonAPI";
+import {
+    seleccionarDigimonObjetivo,
+    filtrarSugerencias,
+    comparacionBasica
+} from "../utils/digimonUtils";
 import "../styles/AdivinaNombre.css";
-import sha1 from "sha1";
+
 export default function DescripcionGame() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -10,44 +15,26 @@ export default function DescripcionGame() {
     const [results, setResults] = useState([]);
     const [digimonObjetivo, setDigimonObjetivo] = useState(null);
     const [suggestions, setSuggestions] = useState([]);
-    const [fecha, setFecha] = useState(new Date());
-
+    const [fecha] = useState(new Date());
 
     useEffect(() => {
         fetchDigimonList(0, 1488)
             .then((list) => {
                 setDigimonsDisponibles(list);
-                const cadena_semilla=fecha.toDateString().toLowerCase().trim()+ "jpputo";//genera semilla
-                
-                const hash = sha1(cadena_semilla);//transforma semilla a hash
-                const entero = parseInt(hash,16);//parsea el hash a entero
-                const numero_digi=(entero%1488)-1;// Obtiene un número entre 0 y 1487 (índices de Digimons)
-                console.log("Número de Digimon seleccionado:", numero_digi+1);//log para comprobar el número seleccionado
-                const selectDigmon = list[numero_digi];// Selecciona el Digimon correspondiente al índice
-
-                setDigimonObjetivo(selectDigmon);
+                const objetivo = seleccionarDigimonObjetivo(list, fecha, "jpputo");
+                setDigimonObjetivo(objetivo);
                 setLoading(false);
             })
             .catch((err) => {
                 setError(err.message);
                 setLoading(false);
             });
-    }, []);
+    }, [fecha]);
 
     function handleInputChange(e) {
         const val = e.target.value;
         setGuess(val);
-
-        if (val.length < 1) {
-            setSuggestions([]);
-            return;
-        }
-
-        const filtered = digimonsDisponibles
-            .filter((d) => d.name.toLowerCase().startsWith(val.toLowerCase()))
-            .slice(0, 10);
-
-        setSuggestions(filtered);
+        setSuggestions(filtrarSugerencias(digimonsDisponibles, val, 10));
     }
 
     function handleSuggestionClick(name) {
@@ -86,7 +73,7 @@ export default function DescripcionGame() {
     }
 
     function procesarAdivinanza(found) {
-        const comparacion = getComparacion(found, digimonObjetivo);
+        const comparacion = comparacionBasica(found, digimonObjetivo);
         setResults((prev) => [...prev, { digimon: found, comparacion }]);
 
         setDigimonsDisponibles((prev) =>
@@ -95,12 +82,6 @@ export default function DescripcionGame() {
 
         setGuess("");
         setSuggestions([]);
-    }
-
-    function getComparacion(found, objetivo) {
-        return {
-            name: { match: found.name.toLowerCase() === objetivo.name.toLowerCase() },
-        };
     }
 
     function icono(comparacion) {
@@ -158,7 +139,9 @@ export default function DescripcionGame() {
                 {[...results].reverse().map((r, index) => (
                     <li key={index}>
                         {r.error ? (
-                            <div><strong>{r.guess}</strong>: {r.error}</div>
+                            <div>
+                                <strong>{r.guess}</strong>: {r.error}
+                            </div>
                         ) : (
                             <div className={`simple-result ${icono(r.comparacion)}`}>
                                 <img src={r.digimon.image} alt={r.digimon.name} width={60} height={60} />
@@ -171,4 +154,3 @@ export default function DescripcionGame() {
         </div>
     );
 }
-

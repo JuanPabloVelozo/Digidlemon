@@ -22,7 +22,7 @@ export default function Home() {
                 <button onClick={() => navigate("/de-quien-es-el-ataque")}>
                     <span className="button-icon">⚔️</span> De quién es el ataque
                 </button>
-                <button onClick={() => navigate("/de-quien-es-el-ataque")}>
+                <button onClick={() => navigate("/de-quien-silueta")}>
                     <span className="button-icon">📷</span> De quién es la foto
                 </button>
             </div>
