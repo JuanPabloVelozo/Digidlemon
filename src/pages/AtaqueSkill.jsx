@@ -6,7 +6,7 @@ import {
     comparacionBasica,
     icono
 } from "../utils/digimonUtils";
-import "../styles/AdivinaNombre.css";
+import "../styles/main.css";
 
 export default function DescripcionGame() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
