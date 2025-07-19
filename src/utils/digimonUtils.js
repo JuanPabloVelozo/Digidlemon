@@ -38,12 +38,14 @@ export function filtrarSugerencias(digimonsDisponibles, texto, max = 10) {
 
 // Función básica de comparación (solo nombre)
 export function comparacionBasica(found, objetivo) {
+    const nameMatch = found.name.toLowerCase() === objetivo.name.toLowerCase();
     return {
-        name: { match: found.name.toLowerCase() === objetivo.name.toLowerCase() }
+        name: { match: nameMatch },
+        isCorrect: nameMatch,
     };
 }
 
-// Función completa de comparación para AdivinaNombre.jsx
+
 export function comparacionCompleta(found, objetivo) {
     const posFound = nivelesOrden.indexOf(found.level);
     const posObjetivo = nivelesOrden.indexOf(objetivo.level);
@@ -54,8 +56,10 @@ export function comparacionCompleta(found, objetivo) {
         else if (posFound < posObjetivo) levelDirection = "down";
     }
 
+    const nameMatch = found.name.toLowerCase() === objetivo.name.toLowerCase();
+
     return {
-        name: { match: found.name.toLowerCase() === objetivo.name.toLowerCase() },
+        name: { match: nameMatch },
         xAntibody: { match: found.xAntibody === objetivo.xAntibody },
         level: {
             match: found.level.toLowerCase() === objetivo.level.toLowerCase(),
@@ -78,6 +82,7 @@ export function comparacionCompleta(found, objetivo) {
                             ? "down"
                             : null,
         },
+        isCorrect: nameMatch,  
     };
 }
 
@@ -101,4 +106,16 @@ export function icono(comparacion) {
     if (!comparacion) return "";
     if (comparacion.name.match) return "status-correct";
     return "status-wrong";
+}
+
+// Función para generar confeti reutilizable
+export const colors = ["#f94144", "#f3722c", "#f9c74f", "#90be6d", "#577590"];
+
+export function generarConfeti(windowWidth, cantidad = 60) {
+    return Array.from({ length: cantidad }).map(() => ({
+        id: Math.random().toString(36).substr(2, 9),
+        left: Math.random() * windowWidth,
+        delay: Math.random(),
+        colorIndex: Math.floor(Math.random() * colors.length),
+    }));
 }

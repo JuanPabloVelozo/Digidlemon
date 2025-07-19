@@ -12,7 +12,7 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(58, 143, 183, 0.3);
-    gap: 12px;
+    gap: 10px;
 }
 
 .input-wrapper {
@@ -247,4 +247,85 @@ h2, h3 {
     border-color: #f44336;
     color: #ff6b6b;
     box-shadow: 0 0 12px #f44336;
+}
+
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(150vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Estilo confeti */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 9999;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    opacity: 0.8;
+    animation: fall 1.5s linear forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* Contenedor para centrar el botón */
+.success-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo del botón circular */
+.success-button {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(145deg, #00bfff, #0066cc);
+    border-radius: 50%;
+    border: 2px solid black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 6px #00bfff, inset 0 0 10px #00bfff;
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    font-size: 34px;
+    color: white;
+}
+
+    .success-button:hover {
+        background: linear-gradient(145deg, #0066cc, #00bfff);
+        box-shadow: 0 0 14px #00e0ff, inset 0 0 14px #00e0ff;
+        transform: scale(1.1);
+    }
+
+.button-icon {
+    pointer-events: none;
+    user-select: none;
 }
