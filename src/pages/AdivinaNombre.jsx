@@ -21,16 +21,16 @@ export default function AdivinaNombre() {
 
     useEffect(() => {
         //localStorage.clear();
-        if (localStorage.getItem("digimonList") !== null ) { 
-            try{
-            let digi=[];
-            digi = JSON.parse(localStorage.getItem("digimonList"));
-            setDigimons(digi);
-            setDigimonsDisponibles(digi);
-            let objetivo = seleccionarDigimonObjetivo(digi, fecha, "gordoputo");
-            setDigimonObjetivo(objetivo);
-            setLoading(false);
-            }catch(err){
+        if (localStorage.getItem("digimonList") !== null) {
+            try {
+                let digi = [];
+                digi = JSON.parse(localStorage.getItem("digimonList"));
+                setDigimons(digi);
+                setDigimonsDisponibles(digi);
+                let objetivo = seleccionarDigimonObjetivo(digi, fecha, "gordoputo");
+                setDigimonObjetivo(objetivo);
+                setLoading(false);
+            } catch (err) {
                 setError(err.message);
                 setLoading(false);
             }
@@ -124,7 +124,7 @@ export default function AdivinaNombre() {
     if (!digimonObjetivo) return <p className="status-message status-error">No se encontró al Digimon objetivo.</p>;
 
     return (
-        <div>
+        <div className="pagina-digimon">
             <h2>Adivina el Nombre del Digimon</h2>
             <form onSubmit={handleSubmit} className="form-container">
                 <input
@@ -183,13 +183,9 @@ export default function AdivinaNombre() {
                                 )}
                             </li>
                         ))}
-
                     </ul>
                 </div>
             </div>
-
-
-
         </div>
     );
 }

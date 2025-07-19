@@ -7,6 +7,7 @@ import {
     icono
 } from "../utils/digimonUtils";
 import "../styles/main.css";
+import ResultadoSimple from "./ResultadoSimple"; // Ajusta la ruta si es necesario
 
 export default function DescripcionGame() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
@@ -150,22 +151,24 @@ export default function DescripcionGame() {
             </form>
 
             <h3>Intentos:</h3>
-            <ul className="attempts-list">
-                {[...results].reverse().map((r, index) => (
-                    <li key={index}>
-                        {r.error ? (
-                            <div>
-                                <strong>{r.guess}</strong>: {r.error}
-                            </div>
-                        ) : (
-                                <div className={`simple-result ${icono(r.comparacion)}`}>
-                                <img src={r.digimon.image} alt={r.digimon.name} width={60} height={60} />
-                                <span>{r.digimon.name}</span>
-                            </div>
-                        )}
-                    </li>
-                ))}
-            </ul>
+            <div className="attempts-container">
+                <ul className="attempts-list">
+                    {[...results].reverse().map((r, index) => (
+                        <li key={index}>
+                            {r.error ? (
+                                <div>
+                                    <strong>{r.guess}</strong>: {r.error}
+                                </div>
+                            ) : (
+                                <ResultadoSimple
+                                    digimon={r.digimon}
+                                    status={r.comparacion}  // Aquí pasamos el objeto completo
+                                />
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 }

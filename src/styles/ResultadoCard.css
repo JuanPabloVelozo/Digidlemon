@@ -17,6 +17,7 @@
     margin-left: 14px;
 }
 
+
 .resultado-card-item {
     background: #121212;
     border: 2px solid #3a8fb7;
@@ -74,4 +75,39 @@
     box-shadow: 0 0 8px #ffeb3b;
 }
 
+/* Flechas grandes de fondo */
+.resultado-card-item.arrow-up::before,
+.resultado-card-item.arrow-down::before {
+    content: attr(data-arrow);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8rem;
+    color: rgba(244, 67, 54, 0.25); /* un poco más opaco para mejor visibilidad */
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+    /* Ajustes para mejorar nitidez */
+    text-shadow: -1px -1px 0 rgba(244, 67, 54, 0.3), 1px -1px 0 rgba(244, 67, 54, 0.3), -1px 1px 0 rgba(244, 67, 54, 0.3), 1px 1px 0 rgba(244, 67, 54, 0.3);
+    /* Forzar renderizado más nítido */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
+
+/* Asegurar que el contenido quede por encima */
+.resultado-card-item > span {
+    position: relative;
+    z-index: 1;
+}
+
+
+/*este es de descripcionGame*/
+/* Contenedor padre para controlar la alineación */
+.parent-container {
+    display: flex;
+    justify-content: flex-start; /* Cambia a center si quieres centrar todo */
+    align-items: center;
+    padding: 10px;
+}

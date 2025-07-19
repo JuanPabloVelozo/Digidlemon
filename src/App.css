@@ -25,6 +25,7 @@ body {
     /* Evita scroll horizontal en toda la página pero permite scroll en elementos con overflow */
     overflow-x: visible;
     max-width: 100vw; /* evita que el body se desborde horizontalmente */
+    padding-bottom: 100px;
 }
 
     body::before {

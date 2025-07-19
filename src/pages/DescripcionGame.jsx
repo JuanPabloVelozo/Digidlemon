@@ -4,9 +4,10 @@ import {
     seleccionarDigimonObjetivo,
     filtrarSugerencias,
     comparacionBasica,
-    icono
+    icono,
 } from "../utils/digimonUtils";
 import "../styles/main.css";
+import ResultadoSimple from "./ResultadoSimple"; // Ajusta la ruta si es necesario
 
 export default function DescripcionGame() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
@@ -19,7 +20,6 @@ export default function DescripcionGame() {
     const [fecha] = useState(new Date());
 
     useEffect(() => {
-
         if (localStorage.getItem("digimonList") !== null) {
             try {
                 let digi = [];
@@ -28,24 +28,22 @@ export default function DescripcionGame() {
                 const objetivo = seleccionarDigimonObjetivo(digi, fecha, "jpputo");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
-            }
-            catch (err) {
+            } catch (err) {
                 setError(err.message);
                 setLoading(false);
             }
-        }
-        else{    
-        fetchDigimonList(0, 1488)
-            .then((list) => {
-                setDigimonsDisponibles(list);
-                const objetivo = seleccionarDigimonObjetivo(list, fecha, "jpputo");
-                setDigimonObjetivo(objetivo);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
+        } else {
+            fetchDigimonList(0, 1488)
+                .then((list) => {
+                    setDigimonsDisponibles(list);
+                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "jpputo");
+                    setDigimonObjetivo(objetivo);
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    setError(err.message);
+                    setLoading(false);
+                });
         }
     }, [fecha]);
 
@@ -81,7 +79,10 @@ export default function DescripcionGame() {
         );
 
         if (!found) {
-            setResults((prev) => [...prev, { guess: guess.trim(), error: "No encontrado" }]);
+            setResults((prev) => [
+                ...prev,
+                { guess: guess.trim(), error: "No encontrado" },
+            ]);
             setGuess("");
             setSuggestions([]);
             return;
@@ -101,7 +102,6 @@ export default function DescripcionGame() {
         setGuess("");
         setSuggestions([]);
     }
-
 
     if (loading) return <p>Cargando datos...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -157,17 +157,15 @@ export default function DescripcionGame() {
                                     <strong>{r.guess}</strong>: {r.error}
                                 </div>
                             ) : (
-                                <div className={`simple-result ${icono(r.comparacion)}`}>
-                                    <img src={r.digimon.image} alt={r.digimon.name} width={60} height={60} />
-                                    <span>{r.digimon.name}</span>
-                                </div>
+                                <ResultadoSimple
+                                    digimon={r.digimon}
+                                    status={r.comparacion}  // Aquí pasamos el objeto completo
+                                />
                             )}
                         </li>
                     ))}
                 </ul>
             </div>
-
-
         </div>
     );
 }
