@@ -6,7 +6,7 @@ import {
     comparacionBasica,
     icono
 } from "../utils/digimonUtils";
-import "../styles/AdivinaNombre.css";
+import "../styles/main.css";
 
 export default function DescripcionGame() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
@@ -131,22 +131,26 @@ export default function DescripcionGame() {
             </form>
 
             <h3>Intentos:</h3>
-            <ul className="attempts-list">
-                {[...results].reverse().map((r, index) => (
-                    <li key={index}>
-                        {r.error ? (
-                            <div>
-                                <strong>{r.guess}</strong>: {r.error}
-                            </div>
-                        ) : (
+            <div className="attempts-container">
+                <ul className="attempts-list">
+                    {[...results].reverse().map((r, index) => (
+                        <li key={index}>
+                            {r.error ? (
+                                <div>
+                                    <strong>{r.guess}</strong>: {r.error}
+                                </div>
+                            ) : (
                                 <div className={`simple-result ${icono(r.comparacion)}`}>
-                                <img src={r.digimon.image} alt={r.digimon.name} width={60} height={60} />
-                                <span>{r.digimon.name}</span>
-                            </div>
-                        )}
-                    </li>
-                ))}
-            </ul>
+                                    <img src={r.digimon.image} alt={r.digimon.name} width={60} height={60} />
+                                    <span>{r.digimon.name}</span>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+
         </div>
     );
 }

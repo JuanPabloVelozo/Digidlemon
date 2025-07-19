@@ -97,9 +97,9 @@ export default function AdivinaNombre() {
         setSuggestions([]);
     }
 
-    if (loading) return <p>Cargando datos...</p>;
-    if (error) return <p>Error: {error}</p>;
-    if (!digimonObjetivo) return <p>No se encontró al Digimon objetivo.</p>;
+    if (loading) return <p className="status-message">Cargando datos...</p>;
+    if (error) return <p className="status-message status-error">Error: {error}</p>;
+    if (!digimonObjetivo) return <p className="status-message status-error">No se encontró al Digimon objetivo.</p>;
 
     return (
         <div>
@@ -146,17 +146,22 @@ export default function AdivinaNombre() {
                         <span>Release Date</span>
                     </div>
                     <ul className="attempts-list">
-                        {[...results].reverse().map((r, index) => (
+                        {[...results].reverse().map((r, index, arr) => (
                             <li key={index}>
                                 {r.error ? (
                                     <div>
                                         <strong>{r.guess}</strong>: {r.error}
                                     </div>
                                 ) : (
-                                    <ResultadoCard digimon={r.digimon} comparacion={r.comparacion} />
+                                    <ResultadoCard
+                                        digimon={r.digimon}
+                                        comparacion={r.comparacion}
+                                        animate={index === 0} // solo el primero (último intentado) anima
+                                    />
                                 )}
                             </li>
                         ))}
+
                     </ul>
                 </div>
             </div>
