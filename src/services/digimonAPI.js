@@ -32,7 +32,7 @@
             releaseDate: fecha
         });
     }
-
+    localStorage.setItem("digimonList", JSON.stringify(digimonsConNivel));
     return digimonsConNivel;
 }
 //cambio f

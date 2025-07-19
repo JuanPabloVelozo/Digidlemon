@@ -20,20 +20,42 @@ export default function AdivinaNombre() {
     const [fecha] = useState(new Date());
 
     useEffect(() => {
-        fetchDigimonList(0, 1488)
-            .then((list) => {
-                setDigimons(list);
-                setDigimonsDisponibles(list);
-
-                const objetivo = seleccionarDigimonObjetivo(list, fecha, "gordoputo");
-                setDigimonObjetivo(objetivo);
-
-                setLoading(false);
-            })
-            .catch((err) => {
+        //localStorage.clear();
+        if (localStorage.getItem("digimonList") !== null ) { 
+            try{
+            let digi=[];
+            digi = JSON.parse(localStorage.getItem("digimonList"));
+            setDigimons(digi);
+            setDigimonsDisponibles(digi);
+            let objetivo = seleccionarDigimonObjetivo(digi, fecha, "gordoputo");
+            setDigimonObjetivo(objetivo);
+            setLoading(false);
+            }catch(err){
                 setError(err.message);
                 setLoading(false);
-            });
+            }
+        }
+        else {
+
+            fetchDigimonList(0, 1488)
+                .then((list) => {
+
+                    setDigimons(list);
+                    setDigimonsDisponibles(list);
+
+                    let objetivo = seleccionarDigimonObjetivo(list, fecha, "gordoputo");
+                    setDigimonObjetivo(objetivo);
+
+                    console.log(JSON.parse(localStorage.getItem("digimonList")));
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    setError(err.message);
+                    setLoading(false);
+                });
+
+
+        }
     }, [fecha]);
 
     function handleInputChange(e) {

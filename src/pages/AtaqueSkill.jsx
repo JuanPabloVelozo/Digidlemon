@@ -19,6 +19,21 @@ export default function DescripcionGame() {
     const [fecha] = useState(new Date());
 
     useEffect(() => {
+        if (localStorage.getItem("digimonList") !== null) {
+            try {
+                let digi = [];
+                digi = JSON.parse(localStorage.getItem("digimonList"));
+                setDigimonsDisponibles(digi);
+                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "furryhumi");
+                setDigimonObjetivo(objetivo);
+                setLoading(false);
+            }
+            catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        }
+        else{    
         fetchDigimonList(0, 1488)
             .then((list) => {
                 setDigimonsDisponibles(list);
@@ -30,6 +45,8 @@ export default function DescripcionGame() {
                 setError(err.message);
                 setLoading(false);
             });
+        }
+
     }, [fecha]);
 
     function handleInputChange(e) {

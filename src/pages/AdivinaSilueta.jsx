@@ -20,6 +20,22 @@ export default function AdivinaSilueta() {
     const [nivelRevelado, setNivelRevelado] = useState(0); // 0-20 niveles
 
     useEffect(() => {
+
+        if (localStorage.getItem("digimonList") !== null) {
+            try {
+                let digi = [];
+                digi = JSON.parse(localStorage.getItem("digimonList"));
+                setDigimonsDisponibles(digi);
+                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "manqueque");
+                setDigimonObjetivo(objetivo);
+                setLoading(false);
+            }
+            catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        }
+        else{    
         fetchDigimonList(0, 1488)
             .then((list) => {
                 setDigimonsDisponibles(list);
@@ -31,6 +47,9 @@ export default function AdivinaSilueta() {
                 setError(err.message);
                 setLoading(false);
             });
+        }
+
+
     }, [fecha]);
 
     function handleInputChange(e) {
