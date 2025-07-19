@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import "../styles/ResultadoCard.css";
+import "../styles/ResultadoSimple.css";
 
 export default function ResultadoSimple({ digimon, status }) {
     function icono(ok) {
