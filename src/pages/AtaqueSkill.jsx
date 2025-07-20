@@ -1,13 +1,15 @@
 ﻿import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchDigimonList } from "../services/digimonAPI";
 import {
     seleccionarDigimonObjetivo,
     filtrarSugerencias,
     comparacionBasica,
-    icono
+    generarConfeti,
+    colors,
 } from "../utils/digimonUtils";
 import "../styles/main.css";
-import ResultadoSimple from "./ResultadoSimple"; // Ajusta la ruta si es necesario
+import ResultadoSimple from "./ResultadoSimple";
 
 export default function DescripcionGame() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
@@ -19,44 +21,54 @@ export default function DescripcionGame() {
     const [suggestions, setSuggestions] = useState([]);
     const [fecha] = useState(new Date());
 
+    const [confettiPieces, setConfettiPieces] = useState([]);
+    const [gameOver, setGameOver] = useState(false);
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (localStorage.getItem("digimonList") !== null) {
             try {
-                let digi = [];
-                digi = JSON.parse(localStorage.getItem("digimonList"));
+                const digi = JSON.parse(localStorage.getItem("digimonList"));
                 setDigimonsDisponibles(digi);
                 const objetivo = seleccionarDigimonObjetivo(digi, fecha, "furryhumi");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
-            }
-            catch (err) {
+            } catch (err) {
                 setError(err.message);
                 setLoading(false);
             }
+        } else {
+            fetchDigimonList(0, 1488)
+                .then((list) => {
+                    setDigimonsDisponibles(list);
+                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "furryhumi");
+                    setDigimonObjetivo(objetivo);
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    setError(err.message);
+                    setLoading(false);
+                });
         }
-        else{    
-        fetchDigimonList(0, 1488)
-            .then((list) => {
-                setDigimonsDisponibles(list);
-                const objetivo = seleccionarDigimonObjetivo(list, fecha, "furryhumi");
-                setDigimonObjetivo(objetivo);
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
-        }
-
     }, [fecha]);
 
+    function launchConfetti() {
+        const pieces = generarConfeti(window.innerWidth, 60);
+        setConfettiPieces(pieces);
+        setTimeout(() => setConfettiPieces([]), 1500);
+    }
+
     function handleInputChange(e) {
+        if (gameOver) return;
         const val = e.target.value;
         setGuess(val);
         setSuggestions(filtrarSugerencias(digimonsDisponibles, val, 10));
     }
 
     function handleSuggestionClick(name) {
+        if (gameOver) return;
+
         const selected = digimonsDisponibles.find(
             (d) => d.name.toLowerCase() === name.toLowerCase()
         );
@@ -71,6 +83,7 @@ export default function DescripcionGame() {
 
     function handleSubmit(e) {
         e.preventDefault();
+        if (gameOver) return;
 
         if (suggestions.length === 1) {
             procesarAdivinanza(suggestions[0]);
@@ -95,6 +108,11 @@ export default function DescripcionGame() {
         const comparacion = comparacionBasica(found, digimonObjetivo);
         setResults((prev) => [...prev, { digimon: found, comparacion }]);
 
+        if (comparacion.name.match) {
+            launchConfetti();
+            setGameOver(true);
+        }
+
         setDigimonsDisponibles((prev) =>
             prev.filter((d) => d.name.toLowerCase() !== found.name.toLowerCase())
         );
@@ -103,6 +121,10 @@ export default function DescripcionGame() {
         setSuggestions([]);
     }
 
+    function handleContinue() {
+        // Cambia la ruta aquí según el flujo de tu app
+        navigate("/gameover");
+    }
 
     if (loading) return <p>Cargando datos...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -111,7 +133,7 @@ export default function DescripcionGame() {
         return <p>El Digimon objetivo no tiene descripción válida.</p>;
 
     return (
-        <div className="container">
+        <div className="container" style={{ position: "relative" }}>
             <h2>¿De quién es el ataque?</h2>
 
             <div className="description-box">
@@ -119,36 +141,52 @@ export default function DescripcionGame() {
                 <p>{digimonObjetivo.skillDescrip}</p>
             </div>
 
+            {!gameOver && (
+                <form onSubmit={handleSubmit} className="form-container">
+                    <input
+                        type="text"
+                        value={guess}
+                        onChange={handleInputChange}
+                        placeholder="Escribe un nombre"
+                        autoComplete="off"
+                        className="input-guess"
+                        disabled={gameOver}
+                    />
 
-            <form onSubmit={handleSubmit} className="form-container">
-                <input
-                    type="text"
-                    value={guess}
-                    onChange={handleInputChange}
-                    placeholder="Escribe un nombre"
-                    autoComplete="off"
-                    className="input-guess"
-                />
+                    {suggestions.length > 0 && (
+                        <ul className="suggestions-list">
+                            {suggestions.map((sug) => (
+                                <li
+                                    key={sug.id}
+                                    onClick={() => handleSuggestionClick(sug.name)}
+                                    onMouseDown={(e) => e.preventDefault()}
+                                >
+                                    <img src={sug.image} alt={sug.name} width={40} height={40} />
+                                    <span>{sug.name}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
 
-                {suggestions.length > 0 && (
-                    <ul className="suggestions-list">
-                        {suggestions.map((sug) => (
-                            <li
-                                key={sug.id}
-                                onClick={() => handleSuggestionClick(sug.name)}
-                                onMouseDown={(e) => e.preventDefault()}
-                            >
-                                <img src={sug.image} alt={sug.name} width={40} height={40} />
-                                <span>{sug.name}</span>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                    <button type="submit" className="submit-button" disabled={gameOver}>
+                        Probar
+                    </button>
+                </form>
+            )}
 
-                <button type="submit" className="submit-button">
-                    Probar
-                </button>
-            </form>
+            {gameOver && (
+                <div className="success-message">
+                    <h3>Correct!</h3>
+                    <div className="success-button-container">
+                        <button
+                            onClick={() => navigate("/de-quien-silueta")}
+                            className="success-button"
+                        >
+                            <span className="button-icon">📷</span> 
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <h3>Intentos:</h3>
             <div className="attempts-container">
@@ -162,12 +200,26 @@ export default function DescripcionGame() {
                             ) : (
                                 <ResultadoSimple
                                     digimon={r.digimon}
-                                    status={r.comparacion}  // Aquí pasamos el objeto completo
+                                    status={r.comparacion}
                                 />
                             )}
                         </li>
                     ))}
                 </ul>
+            </div>
+
+            <div className="confetti-container">
+                {confettiPieces.map(({ id, left, delay, colorIndex }) => (
+                    <div
+                        key={id}
+                        className="confetti-piece"
+                        style={{
+                            left,
+                            animationDelay: `${delay}s`,
+                            backgroundColor: colors[colorIndex],
+                        }}
+                    />
+                ))}
             </div>
         </div>
     );
