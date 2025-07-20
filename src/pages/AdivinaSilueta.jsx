@@ -43,7 +43,7 @@ export default function AdivinaSilueta() {
             fetchDigimonList(0, 1488)
                 .then((list) => {
                     setDigimonsDisponibles(list);
-                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "manqueque");
+                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "digiKey@427*alpha");
                     setDigimonObjetivo(objetivo);
                     setLoading(false);
                 })

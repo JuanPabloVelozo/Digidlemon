@@ -44,7 +44,7 @@ export default function DescriptionGame() {
             fetchDigimonList(0, 1488)
                 .then((list) => {
                     setDigimonsDisponibles(list);
-                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "jpputo");
+                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "objCode$135/dgm");
                     setDigimonObjetivo(objetivo);
                     setLoading(false);
                 })

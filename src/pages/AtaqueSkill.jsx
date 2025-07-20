@@ -43,7 +43,7 @@ export default function DescripcionGame() {
             fetchDigimonList(0, 1488)
                 .then((list) => {
                     setDigimonsDisponibles(list);
-                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "furryhumi");
+                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "targetID#88!beta");
                     setDigimonObjetivo(objetivo);
                     setLoading(false);
                 })
