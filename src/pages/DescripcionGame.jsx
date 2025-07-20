@@ -235,10 +235,19 @@ export default function DescriptionGame() {
                 </ul>
             </div>
 
-           
-
-
-
+            <div className="confetti-container">
+                {confettiPieces.map(({ id, left, delay, colorIndex }) => (
+                    <div
+                        key={id}
+                        className="confetti-piece"
+                        style={{
+                            left,
+                            animationDelay: `${delay}s`,
+                            backgroundColor: colors[colorIndex],
+                        }}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
