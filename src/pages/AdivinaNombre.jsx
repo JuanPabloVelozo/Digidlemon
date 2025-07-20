@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchDigimonList } from "../services/digimonAPI";
-import ResultadoCard from "./ResultadoCard";
+import ResultadoCard from "../components/ResultadoCard";
 import "../styles/AdivinaNombre.css";
 import {
     seleccionarDigimonObjetivo,
@@ -38,7 +38,7 @@ export default function AdivinaNombre() {
 
                 setDigimons(list);
                 setDigimonsDisponibles(list);
-                setDigimonObjetivo(seleccionarDigimonObjetivo(list, fecha, "gordoputo"));
+                setDigimonObjetivo(seleccionarDigimonObjetivo(list, fecha, "Digimon#219/dxmon"));
                 setLoading(false);
             } catch (err) {
                 setError(err.message);

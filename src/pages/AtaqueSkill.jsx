@@ -9,7 +9,7 @@ import {
     colors,
 } from "../utils/digimonUtils";
 import "../styles/main.css";
-import ResultadoSimple from "./ResultadoSimple";
+import ResultadoSimple from "../components/ResultadoSimple";
 
 export default function DescripcionGame() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
@@ -32,7 +32,7 @@ export default function DescripcionGame() {
             try {
                 const digi = JSON.parse(localStorage.getItem("digimonList"));
                 setDigimonsDisponibles(digi);
-                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "furryhumi");
+                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "targetID#88!beta");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
             } catch (err) {
@@ -141,9 +141,16 @@ export default function DescripcionGame() {
         navigate("/gameover");
     }
 
-    if (loading) return <p>Cargando datos...</p>;
-    if (error) return <p>Error: {error}</p>;
-    if (!digimonObjetivo) return <p>No se encontró al Digimon objetivo.</p>;
+    if (loading) return <p className="status-message">Loading data...</p>;
+    if (error) return <p className="status-message status-error">Error: {error}</p>;
+    if (!digimonObjetivo)
+        return (
+            <p className="status-message status-error">
+                Target Digimon not found.
+            </p>
+        );
+
+
     if (!digimonObjetivo.description || digimonObjetivo.description === "Desconocido")
         return <p>El Digimon objetivo no tiene descripción válida.</p>;
 
@@ -158,12 +165,12 @@ export default function DescripcionGame() {
             {/* Contenedor de pistas */}
             <div className="hints-container">
                 <div className="hint-box" style={{ textAlign: "left" }}>
-                    <strong>Pista - Tipo:</strong>{" "}
+                    <strong>Clue - Type:</strong>{" "}
                     {failedAttempts >= 5 ? digimonObjetivo.type || "Desconocido" : ""}
                 </div>
 
                 <div className="hint-box" style={{ textAlign: "right" }}>
-                    <strong>Pista - Nivel: </strong>{" "}
+                    <strong>Clue - Nevel: </strong>{" "}
                     {failedAttempts >= 10 ? digimonObjetivo.level || "Desconocido" : ""}
                 </div>
             </div>
@@ -222,7 +229,7 @@ export default function DescripcionGame() {
                 </div>
             )}
 
-            <h3>Intentos:</h3>
+            <h3>Attempts:</h3>
             <div className="attempts-container">
                 <ul className="attempts-list">
                     {[...results].reverse().map((r, index) => (

@@ -9,7 +9,7 @@ import {
     colors,
 } from "../utils/digimonUtils";
 import "../styles/main.css";
-import ResultadoSimple from "./ResultadoSimple";
+import ResultadoSimple from "../components/ResultadoSimple";
 
 export default function DescriptionGame() {
     const navigate = useNavigate();
@@ -33,7 +33,7 @@ export default function DescriptionGame() {
             try {
                 let digi = JSON.parse(localStorage.getItem("digimonList"));
                 setDigimonsDisponibles(digi);
-                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "jpputo");
+                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "objCode$135/dgm");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
             } catch (err) {
@@ -130,9 +130,14 @@ export default function DescriptionGame() {
         procesarAdivinanza(found);
     }
 
-    if (loading) return <p>Loading data...</p>;
-    if (error) return <p>Error: {error}</p>;
-    if (!digimonObjetivo) return <p>Target Digimon not found.</p>;
+    if (loading) return <p className="status-message">Loading data...</p>;
+    if (error) return <p className="status-message status-error">Error: {error}</p>;
+    if (!digimonObjetivo)
+        return (
+            <p className="status-message status-error">
+                Target Digimon not found.
+            </p>
+        );
     if (!digimonObjetivo.description || digimonObjetivo.description === "Desconocido")
         return <p>The target Digimon has no valid description.</p>;
 
@@ -146,14 +151,14 @@ export default function DescriptionGame() {
 
             {/* Contenedor de pistas */}
             <div className="hints-container">
-                <div className="hint-box" style={{ textAlign: "left" }}>
-                    <strong>Pista - Año de aparición:</strong>{" "}
-                    {failedAttempts >= 5 ? digimonObjetivo.releaseDate || "Desconocido" : ""}
+                <div className="hint-box">
+                    <strong>Clue - Year appeared:</strong>
+                    <span>{failedAttempts >= 5 ? digimonObjetivo.releaseDate || "Desconocido" : ""}</span>
                 </div>
 
-                <div className="hint-box" style={{ textAlign: "right" }}>
-                    <strong>Pista - Ataque principal:</strong>{" "}
-                    {failedAttempts >= 10 ? digimonObjetivo.skill || "Desconocido" : ""}
+                <div className="hint-box">
+                    <strong>Clue - main attack:</strong>
+                    <span>{failedAttempts >= 10 ? digimonObjetivo.skill || "Desconocido" : ""}</span>
                 </div>
             </div>
 

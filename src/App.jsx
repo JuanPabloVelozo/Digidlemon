@@ -1,10 +1,10 @@
 ﻿import { Routes, Route, useNavigate } from "react-router-dom";
+import Navbar from "./components/Navbar";  // importa el Navbar
 import Home from "./pages/Home";
 import AdivinaNombre from "./pages/AdivinaNombre";
-import DescripcionGame from "./pages/DescripcionGame";  // Importar el juego nuevo
+import DescripcionGame from "./pages/DescripcionGame";
 import AtaqueSkill from "./pages/AtaqueSkill";
 import AdivinaSilueta from "./pages/AdivinaSilueta";
-
 
 import "./App.css";
 
@@ -17,6 +17,8 @@ export default function App() {
                 <img src="/images/logo.png" alt="Logo" className="home-logo" />
             </div>
 
+            <Navbar />  {/* Aquí agregas el Navbar */}
+
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/adivina-nombre" element={<AdivinaNombre />} />
@@ -27,4 +29,3 @@ export default function App() {
         </div>
     );
 }
-

@@ -9,7 +9,7 @@ import {
     colors,
 } from "../utils/digimonUtils";
 import "../styles/main.css";
-import ResultadoSimple from "./ResultadoSimple";
+import ResultadoSimple from "../components/ResultadoSimple";
 
 export default function AdivinaSilueta() {
     const [digimonsDisponibles, setDigimonsDisponibles] = useState([]);
@@ -32,7 +32,7 @@ export default function AdivinaSilueta() {
             try {
                 const digi = JSON.parse(localStorage.getItem("digimonList"));
                 setDigimonsDisponibles(digi);
-                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "manqueque");
+                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "digiKey@427*alpha");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
             } catch (err) {
@@ -157,10 +157,14 @@ export default function AdivinaSilueta() {
         navigate("/gameover");
     }
 
-    if (loading) return <p>Cargando datos...</p>;
-    if (error) return <p>Error: {error}</p>;
-    if (!digimonObjetivo) return <p>No se encontró al Digimon objetivo.</p>;
-
+    if (loading) return <p className="status-message">Loading data...</p>;
+    if (error) return <p className="status-message status-error">Error: {error}</p>;
+    if (!digimonObjetivo)
+        return (
+            <p className="status-message status-error">
+                Target Digimon not found.
+            </p>
+        );
     const containerSize = 300;
     const maxNivel = 50;
     const maxTranslate = 90;
@@ -174,7 +178,7 @@ export default function AdivinaSilueta() {
 
     return (
         <div className="container" style={{ position: "relative" }}>
-            <h2>¿Quién es este Digimon?</h2>
+            <h2>Who is this Digimon?</h2>
             <div className="imagen-box">
                 <div
                     className="silueta-box"
@@ -265,7 +269,7 @@ export default function AdivinaSilueta() {
                 </div>
             )}
 
-            <h3>Intentos:</h3>
+            <h3>Attempts:</h3>
             <div className="attempts-container">
                 <ul className="attempts-list">
                     {[...results].reverse().map((r, index) => (

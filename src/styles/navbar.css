@@ -1,0 +1,65 @@
+﻿.navbar {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	font-family: 'Orbitron', monospace, sans-serif;
+	z-index: 100;
+	position: relative; /* importante para el pseudo-elemento */
+}
+
+.nav-links {
+	display: flex;
+	gap: 15px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	align-items: center; /* para que los iconos estén alineados verticalmente */
+}
+
+	/* Línea horizontal que pasa por detrás de los iconos */
+	.nav-links::before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 0;
+		right: 0;
+		height: 6px; /* grosor de la línea */
+		background: #3a8fb7; /* color principal */
+		border-top: 2px solid #62c1f0; /* borde superior */
+		border-bottom: 2px solid #62c1f0; /* borde inferior */
+		transform: translateY(-50%);
+		z-index: 0; /* detrás de los iconos */
+	}
+
+
+
+	.nav-links a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 45px;
+		height: 45px;
+		border-radius: 50%;
+		font-size: 24px;
+		font-weight: 700;
+		color: #e6f0f7;
+		background: linear-gradient(145deg, #3a8fb7, #2a6a9a);
+		border: 2px solid #62c1f0;
+		box-shadow: 0 4px 10px rgba(58, 143, 183, 0.6), inset 0 0 10px #62c1f0;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		user-select: none;
+		text-shadow: 1px 1px 2px #000;
+		position: relative; /* para estar sobre la línea */
+		z-index: 1; /* encima de la línea */
+	}
+
+		.nav-links a:hover,
+		.nav-links a:focus {
+			background: linear-gradient(145deg, #2a6a9a, #1e4f71);
+			box-shadow: 0 6px 15px rgba(42, 106, 154, 0.8), inset 0 0 12px #62c1f0;
+			transform: translateY(-2px);
+			outline: none;
+		}

@@ -1,14 +1,14 @@
 ﻿.logo-container {
     width: 100%;
     text-align: center;
-    margin: 20px 0;
+    margin: 20px 0 0 0;
     cursor: pointer;
 }
 
 .home-logo {
     width: 400px;
     transition: transform 0.3s ease;
-    margin: 20px auto 50px auto;
+    margin: 20px auto 5px auto;
     display: block;
 }
 

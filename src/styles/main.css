@@ -176,25 +176,27 @@
 .hints-container {
     display: flex;
     margin-top: 1em;
-    max-width: 650px;
+    max-width: 640px;
     margin: 0 auto 10px auto;
 }
-.hint-box strong {
-    margin-right: 4em; /* o el valor que te guste */
-}
-
 
 .hint-box {
     flex: 1;
-    font-family: 'Orbitron', monospace, sans-serif;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0;
     background: rgba(0, 0, 0, 0.7);
     border: 2px solid #3a8fb7;
     border-radius: 10px;
-    padding: 10px 15px;
+    padding: 10px 8px; /* Reducido a 8px en laterales */
     color: #cce7f0;
     font-size: 1.1rem;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    min-height: 2.5em; /* Para mantener altura estable */
+    min-height: 2.5em;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
 }
+
+
+

@@ -35,7 +35,7 @@ export default function Home() {
             </button>
 
             {showList && <DigimonList />}
-        </div>
+            </div>
     );
 }
 
