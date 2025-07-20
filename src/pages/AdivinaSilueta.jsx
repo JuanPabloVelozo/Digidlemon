@@ -167,14 +167,15 @@ export default function AdivinaSilueta() {
         );
     const containerSize = 300;
     const maxNivel = 50;
-    const maxTranslate = 90;
+    const maxTranslate = 120;
 
-    const scale = 3 - (nivelRevelado * (2 / maxNivel));
+    const scale = 5 - (nivelRevelado * (4 / maxNivel));
 
     const { translateX: baseTranslateX, translateY: baseTranslateY } = getTranslateFromDate(fecha, maxTranslate);
 
     const translateX = (maxNivel - nivelRevelado) * (baseTranslateX / maxNivel);
     const translateY = (maxNivel - nivelRevelado) * (baseTranslateY / maxNivel);
+
 
     return (
         <div className="container" style={{ position: "relative" }}>
@@ -201,7 +202,7 @@ export default function AdivinaSilueta() {
                             height: containerSize,
                             objectFit: "cover",
                             transformOrigin: "center",
-                            transform: `scale(${scale}) translate(${translateX}px, ${translateY}px)`,
+                            transform: `translate(${translateX}px, ${translateY}px) scale(${scale})`,
                             transition: "transform 0.5s ease",
                             userSelect: "none",
                             pointerEvents: "none",
