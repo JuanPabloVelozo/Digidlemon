@@ -23,8 +23,9 @@ export default function DescripcionGame() {
 
     const [confettiPieces, setConfettiPieces] = useState([]);
     const [gameOver, setGameOver] = useState(false);
-
+    const [failedAttempts, setFailedAttempts] = useState(0);
     const navigate = useNavigate();
+    const [inputError, setInputError] = useState("");
 
     useEffect(() => {
         if (localStorage.getItem("digimonList") !== null) {
@@ -61,10 +62,18 @@ export default function DescripcionGame() {
 
     function handleInputChange(e) {
         if (gameOver) return;
+        setInputError("");  // limpia errores cuando escribes
         const val = e.target.value;
         setGuess(val);
+
+        if (val.length < 1) {
+            setSuggestions([]);
+            return;
+        }
+
         setSuggestions(filtrarSugerencias(digimonsDisponibles, val, 10));
     }
+
 
     function handleSuggestionClick(name) {
         if (gameOver) return;
@@ -79,14 +88,16 @@ export default function DescripcionGame() {
 
         setGuess("");
         setSuggestions([]);
+        setInputError("");
     }
+
 
     function handleSubmit(e) {
         e.preventDefault();
         if (gameOver) return;
 
-        if (suggestions.length === 1) {
-            procesarAdivinanza(suggestions[0]);
+        if (!guess.trim()) {
+            setInputError("Por favor, escribe un nombre");
             return;
         }
 
@@ -95,14 +106,14 @@ export default function DescripcionGame() {
         );
 
         if (!found) {
-            setResults((prev) => [...prev, { guess: guess.trim(), error: "No encontrado" }]);
-            setGuess("");
-            setSuggestions([]);
+            setInputError("Digimon no encontrado");
             return;
         }
 
+        setInputError("");
         procesarAdivinanza(found);
     }
+
 
     function procesarAdivinanza(found) {
         const comparacion = comparacionBasica(found, digimonObjetivo);
@@ -111,6 +122,9 @@ export default function DescripcionGame() {
         if (comparacion.name.match) {
             launchConfetti();
             setGameOver(true);
+        } else {
+            // Aquí incremento los intentos fallidos
+            setFailedAttempts(prev => prev + 1);
         }
 
         setDigimonsDisponibles((prev) =>
@@ -120,6 +134,7 @@ export default function DescripcionGame() {
         setGuess("");
         setSuggestions([]);
     }
+
 
     function handleContinue() {
         // Cambia la ruta aquí según el flujo de tu app
@@ -140,36 +155,55 @@ export default function DescripcionGame() {
                 <h4>{digimonObjetivo.skill}</h4>
                 <p>{digimonObjetivo.skillDescrip}</p>
             </div>
+            {/* Contenedor de pistas */}
+            <div className="hints-container">
+                <div className="hint-box" style={{ textAlign: "left" }}>
+                    <strong>Pista - Tipo:</strong>{" "}
+                    {failedAttempts >= 5 ? digimonObjetivo.type || "Desconocido" : ""}
+                </div>
 
+                <div className="hint-box" style={{ textAlign: "right" }}>
+                    <strong>Pista - Nivel: </strong>{" "}
+                    {failedAttempts >= 10 ? digimonObjetivo.level || "Desconocido" : ""}
+                </div>
+            </div>
             {!gameOver && (
                 <form onSubmit={handleSubmit} className="form-container">
-                    <input
-                        type="text"
-                        value={guess}
-                        onChange={handleInputChange}
-                        placeholder="Escribe un nombre"
-                        autoComplete="off"
-                        className="input-guess"
-                        disabled={gameOver}
-                    />
+                    <div className="input-wrapper">
+                        <input
+                            type="text"
+                            value={guess}
+                            onChange={handleInputChange}
+                            placeholder="Type a name"
+                            autoComplete="off"
+                            className="input-guess"
+                            disabled={gameOver}
+                        />
 
-                    {suggestions.length > 0 && (
-                        <ul className="suggestions-list">
-                            {suggestions.map((sug) => (
-                                <li
-                                    key={sug.id}
-                                    onClick={() => handleSuggestionClick(sug.name)}
-                                    onMouseDown={(e) => e.preventDefault()}
-                                >
-                                    <img src={sug.image} alt={sug.name} width={40} height={40} />
-                                    <span>{sug.name}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                        {(suggestions.length > 0 || inputError) && (
+                            <ul className="suggestions-list">
+                                {inputError ? (
+                                    <li className="error-item" onMouseDown={(e) => e.preventDefault()}>
+                                        {inputError}
+                                    </li>
+                                ) : (
+                                    suggestions.map((sug) => (
+                                        <li
+                                            key={sug.id}
+                                            onClick={() => handleSuggestionClick(sug.name)}
+                                            onMouseDown={(e) => e.preventDefault()}
+                                        >
+                                            <img src={sug.image} alt={sug.name} width={40} height={40} />
+                                            <span>{sug.name}</span>
+                                        </li>
+                                    ))
+                                )}
+                            </ul>
+                        )}
+                    </div>
 
                     <button type="submit" className="submit-button" disabled={gameOver}>
-                        Probar
+                        Try
                     </button>
                 </form>
             )}

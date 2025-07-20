@@ -5,7 +5,6 @@ import {
     seleccionarDigimonObjetivo,
     filtrarSugerencias,
     comparacionBasica,
-    icono,
     generarConfeti,
     colors,
 } from "../utils/digimonUtils";
@@ -21,8 +20,8 @@ export default function AdivinaSilueta() {
     const [digimonObjetivo, setDigimonObjetivo] = useState(null);
     const [suggestions, setSuggestions] = useState([]);
     const [fecha] = useState(new Date());
-    const [nivelRevelado, setNivelRevelado] = useState(0); // 0-50 niveles
-
+    const [nivelRevelado, setNivelRevelado] = useState(0);
+    const [inputError, setInputError] = useState("");
     const [confettiPieces, setConfettiPieces] = useState([]);
     const [gameOver, setGameOver] = useState(false);
 
@@ -63,29 +62,42 @@ export default function AdivinaSilueta() {
 
     function handleInputChange(e) {
         if (gameOver) return;
+        setInputError("");  // limpia errores cuando escribes
         const val = e.target.value;
         setGuess(val);
+
+        if (val.length < 1) {
+            setSuggestions([]);
+            return;
+        }
+
         setSuggestions(filtrarSugerencias(digimonsDisponibles, val, 10));
     }
 
+
     function handleSuggestionClick(name) {
         if (gameOver) return;
+
         const selected = digimonsDisponibles.find(
             (d) => d.name.toLowerCase() === name.toLowerCase()
         );
+
         if (selected) {
             procesarAdivinanza(selected);
         }
+
         setGuess("");
         setSuggestions([]);
+        setInputError("");
     }
+
 
     function handleSubmit(e) {
         e.preventDefault();
         if (gameOver) return;
 
-        if (suggestions.length === 1) {
-            procesarAdivinanza(suggestions[0]);
+        if (!guess.trim()) {
+            setInputError("Por favor, escribe un nombre");
             return;
         }
 
@@ -94,15 +106,14 @@ export default function AdivinaSilueta() {
         );
 
         if (!found) {
-            setResults((prev) => [...prev, { guess: guess.trim(), error: "No encontrado" }]);
-            setGuess("");
-            setSuggestions([]);
-            aumentarRevelado();
+            setInputError("Digimon no encontrado");
             return;
         }
 
+        setInputError("");
         procesarAdivinanza(found);
     }
+
 
     function aumentarRevelado() {
         setNivelRevelado((prev) => Math.min(50, prev + 1));
@@ -113,7 +124,7 @@ export default function AdivinaSilueta() {
         setResults((prev) => [...prev, { digimon: found, comparacion }]);
 
         if (comparacion.name.match) {
-            setNivelRevelado(50); // Revelado completo si acierta
+            setNivelRevelado(50);
             launchConfetti();
             setGameOver(true);
         } else {
@@ -128,7 +139,6 @@ export default function AdivinaSilueta() {
         setSuggestions([]);
     }
 
-    // Función para obtener desplazamiento basado en la fecha
     function getTranslateFromDate(date, maxTranslate) {
         const dateStr = date.toISOString().slice(0, 10).replace(/-/g, "");
 
@@ -144,7 +154,7 @@ export default function AdivinaSilueta() {
     }
 
     function handleContinue() {
-        navigate("/gameover"); // Cambia ruta a lo que necesites
+        navigate("/gameover");
     }
 
     if (loading) return <p>Cargando datos...</p>;
@@ -199,35 +209,46 @@ export default function AdivinaSilueta() {
 
             {!gameOver && (
                 <form onSubmit={handleSubmit} className="form-container">
-                    <input
-                        type="text"
-                        value={guess}
-                        onChange={handleInputChange}
-                        placeholder="Escribe un nombre"
-                        autoComplete="off"
-                        className="input-guess"
-                        disabled={gameOver}
-                    />
+                    <div className="input-wrapper">
+                        <input
+                            type="text"
+                            value={guess}
+                            onChange={handleInputChange}
+                            placeholder="Type a name"
+                            autoComplete="off"
+                            className="input-guess"
+                            disabled={gameOver}
+                        />
 
-                    {suggestions.length > 0 && (
-                        <ul className="suggestions-list">
-                            {suggestions.map((sug) => (
-                                <li
-                                    key={sug.id}
-                                    onClick={() => handleSuggestionClick(sug.name)}
-                                    onMouseDown={(e) => e.preventDefault()}
-                                >
-                                    <img src={sug.image} alt={sug.name} width={40} height={40} />
-                                    <span>{sug.name}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                        {(suggestions.length > 0 || inputError) && (
+                            <ul className="suggestions-list">
+                                {inputError ? (
+                                    <li className="error-item" onMouseDown={(e) => e.preventDefault()}>
+                                        {inputError}
+                                    </li>
+                                ) : (
+                                    suggestions.map((sug) => (
+                                        <li
+                                            key={sug.id}
+                                            onClick={() => handleSuggestionClick(sug.name)}
+                                            onMouseDown={(e) => e.preventDefault()}
+                                        >
+                                            <img src={sug.image} alt={sug.name} width={40} height={40} />
+                                            <span>{sug.name}</span>
+                                        </li>
+                                    ))
+                                )}
+                            </ul>
+                        )}
+                    </div>
 
                     <button type="submit" className="submit-button" disabled={gameOver}>
-                        Probar
+                        Try
                     </button>
                 </form>
+
+
+
             )}
 
             {gameOver && (
@@ -235,7 +256,7 @@ export default function AdivinaSilueta() {
                     <h3>Correct!</h3>
                     <div className="success-button-container">
                         <button
-                            onClick={() => navigate("/")}  
+                            onClick={() => navigate("/")}
                             className="success-button"
                         >
                             <span className="button-icon">🏠</span>

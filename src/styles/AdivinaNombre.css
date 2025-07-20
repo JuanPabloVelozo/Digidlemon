@@ -329,3 +329,115 @@ h2, h3 {
     pointer-events: none;
     user-select: none;
 }
+
+
+.color-legend {
+    position: relative;
+    margin: 20px auto;
+    padding: 5px;
+    background: rgba(10, 10, 10, 0.8);
+    border: 2px solid #1e90ff;
+    border-radius: 8px;
+    max-width: 600px;
+    color: #a0d8ff;
+    font-family: 'Orbitron', monospace, sans-serif;
+    text-align: center;
+}
+
+    .color-legend h3 {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        font-size: 1.5rem; /* Ajusta el tamaño según lo que necesites */
+    }
+    .color-legend ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .color-legend li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.9rem;
+        min-width: 60px;
+    }
+
+.legend-box {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+    transition: box-shadow 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.status-correct {
+    border-color: #2e7d32;
+    background-color: rgba(46, 125, 50, 0.8);
+    color: #c8facc;
+    font-weight: 700;
+    box-shadow: 0 0 10px #2e7d32;
+}
+
+.status-partial {
+    border-color: #fbc02d;
+    background-color: rgba(251, 192, 45, 0.8);
+    color: #fffde7;
+    font-weight: 700;
+    box-shadow: 0 0 10px #fbc02d;
+}
+
+.status-wrong {
+    border-color: #c62828;
+    background-color: rgba(198, 40, 40, 0.8);
+    color: #ffd6d6;
+    font-weight: 700;
+    box-shadow: 0 0 10px #c62828;
+}
+
+.arrow-sample {
+    border-color: rgba(198, 40, 40, 1);
+    background: rgba(198, 40, 40, 0.5);
+    color: rgba(198, 40, 40, 1);
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(198, 40, 40, 1);
+}
+
+/* Botón de cerrar */
+.close-legend {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    color: #ff4d4d;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+    .close-legend:hover {
+        transform: scale(1.2);
+    }
+
+
+.input-error-message {
+    height: 20px; /* Fija la altura del contenedor */
+    margin: 0 0 6px 0;
+    color: red;
+    font-size: 0.9rem;
+    line-height: 20px;
+    visibility: hidden; /* Oculta pero mantiene el espacio */
+}
+
+    .input-error-message.visible {
+        visibility: visible; /* Muestra el mensaje cuando hay error */
+    }

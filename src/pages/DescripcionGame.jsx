@@ -24,6 +24,9 @@ export default function DescriptionGame() {
     const [fecha] = useState(new Date());
     const [confettiPieces, setConfettiPieces] = useState([]);
     const [gameOver, setGameOver] = useState(false);
+    const [inputError, setInputError] = useState("");
+
+    const failedAttempts = results.filter((r) => !(r.comparacion?.name?.match)).length;
 
     useEffect(() => {
         if (localStorage.getItem("digimonList") !== null) {
@@ -58,58 +61,11 @@ export default function DescriptionGame() {
         setTimeout(() => setConfettiPieces([]), 1500);
     }
 
-    function handleInputChange(e) {
-        if (gameOver) return; // block input if game is over
-        const val = e.target.value;
-        setGuess(val);
-        if (val.length < 1) {
-            setSuggestions([]);
-            return;
-        }
-        setSuggestions(filtrarSugerencias(digimonsDisponibles, val, 10));
-    }
+    function procesarAdivinanza(found) {
+        const comparacion = comparacionBasica(found, digimonObjetivo);
+        setResults((prev) => [...prev, { digimon: found, comparacion }]);
 
-    function handleSuggestionClick(name) {
-        if (gameOver) return; // block clicks if game is over
-
-        const selected = digimonsDisponibles.find(
-            (d) => d.name.toLowerCase() === name.toLowerCase()
-        );
-        if (selected) {
-            processGuess(selected);
-        }
-
-        setGuess("");
-        setSuggestions([]);
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        if (gameOver) return; // block submit if game is over
-        if (!guess.trim()) return;
-
-        const found = digimonsDisponibles.find(
-            (d) => d.name.toLowerCase() === guess.trim().toLowerCase()
-        );
-
-        if (!found) {
-            setResults((prev) => [
-                ...prev,
-                { guess: guess.trim(), error: "Not found" },
-            ]);
-            setGuess("");
-            setSuggestions([]);
-            return;
-        }
-
-        processGuess(found);
-    }
-
-    function processGuess(found) {
-        const comparison = comparacionBasica(found, digimonObjetivo);
-        setResults((prev) => [...prev, { digimon: found, comparacion: comparison }]);
-
-        if (comparison.name.match) {
+        if (comparacion.name.match) {
             launchConfetti();
             setGameOver(true);
         }
@@ -120,6 +76,58 @@ export default function DescriptionGame() {
 
         setGuess("");
         setSuggestions([]);
+    }
+
+    function handleInputChange(e) {
+        if (gameOver) return;
+        setInputError("");
+        const val = e.target.value;
+        setGuess(val);
+
+        if (val.length < 1) {
+            setSuggestions([]);
+            return;
+        }
+
+        setSuggestions(filtrarSugerencias(digimonsDisponibles, val, 10));
+    }
+
+    function handleSuggestionClick(name) {
+        if (gameOver) return;
+
+        const selected = digimonsDisponibles.find(
+            (d) => d.name.toLowerCase() === name.toLowerCase()
+        );
+
+        if (selected) {
+            procesarAdivinanza(selected);
+        }
+
+        setGuess("");
+        setSuggestions([]);
+        setInputError("");
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (gameOver) return;
+
+        if (!guess.trim()) {
+            setInputError("Por favor, escribe un nombre");
+            return;
+        }
+
+        const found = digimonsDisponibles.find(
+            (d) => d.name.toLowerCase() === guess.trim().toLowerCase()
+        );
+
+        if (!found) {
+            setInputError("Digimon no encontrado");
+            return;
+        }
+
+        setInputError("");
+        procesarAdivinanza(found);
     }
 
     if (loading) return <p>Loading data...</p>;
@@ -136,31 +144,55 @@ export default function DescriptionGame() {
                 <p>{digimonObjetivo.description}</p>
             </div>
 
+            {/* Contenedor de pistas */}
+            <div className="hints-container">
+                <div className="hint-box" style={{ textAlign: "left" }}>
+                    <strong>Pista - Año de aparición:</strong>{" "}
+                    {failedAttempts >= 5 ? digimonObjetivo.releaseDate || "Desconocido" : ""}
+                </div>
+
+                <div className="hint-box" style={{ textAlign: "right" }}>
+                    <strong>Pista - Ataque principal:</strong>{" "}
+                    {failedAttempts >= 10 ? digimonObjetivo.skill || "Desconocido" : ""}
+                </div>
+            </div>
+
+
             {!gameOver && (
                 <form onSubmit={handleSubmit} className="form-container">
-                    <input
-                        type="text"
-                        value={guess}
-                        onChange={handleInputChange}
-                        placeholder="Type a name"
-                        autoComplete="off"
-                        className="input-guess"
-                        disabled={gameOver}
-                    />
-                    {suggestions.length > 0 && (
-                        <ul className="suggestions-list">
-                            {suggestions.map((sug) => (
-                                <li
-                                    key={sug.id}
-                                    onClick={() => handleSuggestionClick(sug.name)}
-                                    onMouseDown={(e) => e.preventDefault()}
-                                >
-                                    <img src={sug.image} alt={sug.name} width={40} height={40} />
-                                    <span>{sug.name}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    <div className="input-wrapper">
+                        <input
+                            type="text"
+                            value={guess}
+                            onChange={handleInputChange}
+                            placeholder="Type a name"
+                            autoComplete="off"
+                            className="input-guess"
+                            disabled={gameOver}
+                        />
+
+                        {(suggestions.length > 0 || inputError) && (
+                            <ul className="suggestions-list">
+                                {inputError ? (
+                                    <li className="error-item" onMouseDown={(e) => e.preventDefault()}>
+                                        {inputError}
+                                    </li>
+                                ) : (
+                                    suggestions.map((sug) => (
+                                        <li
+                                            key={sug.id}
+                                            onClick={() => handleSuggestionClick(sug.name)}
+                                            onMouseDown={(e) => e.preventDefault()}
+                                        >
+                                            <img src={sug.image} alt={sug.name} width={40} height={40} />
+                                            <span>{sug.name}</span>
+                                        </li>
+                                    ))
+                                )}
+                            </ul>
+                        )}
+                    </div>
+
                     <button type="submit" className="submit-button" disabled={gameOver}>
                         Try
                     </button>
@@ -198,20 +230,11 @@ export default function DescriptionGame() {
                 </ul>
             </div>
 
-            {/* Confetti container */}
-            <div className="confetti-container">
-                {confettiPieces.map(({ id, left, delay, colorIndex }) => (
-                    <div
-                        key={id}
-                        className="confetti-piece"
-                        style={{
-                            left,
-                            animationDelay: `${delay}s`,
-                            backgroundColor: colors[colorIndex],
-                        }}
-                    />
-                ))}
-            </div>
+           
+
+
+
         </div>
     );
 }
+

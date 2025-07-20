@@ -22,10 +22,10 @@ export default function AdivinaNombre() {
     const [digimonObjetivo, setDigimonObjetivo] = useState(null);
     const [error, setError] = useState("");
     const [suggestions, setSuggestions] = useState([]);
+    const [inputError, setInputError] = useState("");
     const [fecha] = useState(new Date());
     const [confettiPieces, setConfettiPieces] = useState([]);
-
-    // New state to control if the game ended (correct guess)
+    const [showLegend, setShowLegend] = useState(false);
     const [gameOver, setGameOver] = useState(false);
 
     useEffect(() => {
@@ -55,7 +55,8 @@ export default function AdivinaNombre() {
     }
 
     function handleInputChange(e) {
-        if (gameOver) return; // Do not allow changes if game ended
+        if (gameOver) return;
+        setInputError("");
 
         const val = e.target.value;
         setGuess(val);
@@ -67,6 +68,8 @@ export default function AdivinaNombre() {
     }
 
     function processGuess(name) {
+        if (!showLegend) setShowLegend(true);
+
         const found = digimonsDisponibles.find(
             (d) => d.name.toLowerCase() === name.toLowerCase()
         );
@@ -81,7 +84,7 @@ export default function AdivinaNombre() {
 
         if (comparison.isCorrect) {
             launchConfetti();
-            setGameOver(true); // Game ended: correct guess
+            setGameOver(true);
         }
 
         setDigimonsDisponibles((prev) =>
@@ -92,18 +95,41 @@ export default function AdivinaNombre() {
     }
 
     function handleSuggestionClick(name) {
-        if (gameOver) return; // Do not allow interaction if game ended
+        if (gameOver) return;
         setGuess(name);
         setSuggestions([]);
-        processGuess(name);
-        setGuess("");
+        setInputError("");
+        handleSubmitInternal(name);
     }
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (gameOver) return; // Do not allow submit if ended
+        if (gameOver) return;
         if (!guess.trim()) return;
-        processGuess(guess.trim());
+        handleSubmitInternal(guess.trim());
+    }
+
+    function handleSubmitInternal(guessValue) {
+        const exists = digimonsDisponibles.some(
+            (d) => d.name.toLowerCase() === guessValue.toLowerCase()
+        );
+
+        const alreadyTried = results.some((r) =>
+            r.digimon?.name.toLowerCase() === guessValue.toLowerCase()
+        );
+
+        if (!exists) {
+            setInputError("Digimon not found");
+            return;
+        }
+
+        if (alreadyTried) {
+            setInputError("You already tried this Digimon");
+            return;
+        }
+
+        setInputError("");
+        processGuess(guessValue);
         setGuess("");
         setSuggestions([]);
     }
@@ -123,33 +149,46 @@ export default function AdivinaNombre() {
 
             {!gameOver && (
                 <form onSubmit={handleSubmit} className="form-container">
-                    <input
-                        type="text"
-                        value={guess}
-                        onChange={handleInputChange}
-                        placeholder="Type a name"
-                        autoComplete="off"
-                        className="input-guess"
-                        disabled={gameOver}
-                    />
-                    {suggestions.length > 0 && (
-                        <ul className="suggestions-list">
-                            {suggestions.map((sug) => (
-                                <li
-                                    key={sug.id}
-                                    onClick={() => handleSuggestionClick(sug.name)}
-                                    onMouseDown={(e) => e.preventDefault()}
-                                >
-                                    <img src={sug.image} alt={sug.name} width={40} height={40} />
-                                    <span>{sug.name}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    <div className="input-wrapper">
+                        <input
+                            type="text"
+                            value={guess}
+                            onChange={handleInputChange}
+                            placeholder="Type a name"
+                            autoComplete="off"
+                            className="input-guess"
+                            disabled={gameOver}
+                        />
+
+                        {(suggestions.length > 0 || inputError) && (
+                            <ul className="suggestions-list">
+                                {inputError ? (
+                                    <li className="error-item" onMouseDown={(e) => e.preventDefault()}>
+                                        {inputError}
+                                    </li>
+                                ) : (
+                                    suggestions.map((sug) => (
+                                        <li
+                                            key={sug.id}
+                                            onClick={() => handleSuggestionClick(sug.name)}
+                                            onMouseDown={(e) => e.preventDefault()}
+                                        >
+                                            <img src={sug.image} alt={sug.name} width={40} height={40} />
+                                            <span>{sug.name}</span>
+                                        </li>
+                                    ))
+                                )}
+                            </ul>
+                        )}
+                    </div>
+
                     <button type="submit" className="submit-button" disabled={gameOver}>
                         Try
                     </button>
                 </form>
+
+
+
             )}
 
             {gameOver && (
@@ -212,6 +251,20 @@ export default function AdivinaNombre() {
                     />
                 ))}
             </div>
+
+            {showLegend && (
+                <div className="color-legend">
+                    <button className="close-legend" onClick={() => setShowLegend(false)}>✖</button>
+                    <h3>Result Colors & Arrows</h3>
+                    <ul>
+                        <li><span className="legend-box status-correct"></span> Correct</li>
+                        <li><span className="legend-box status-partial"></span> Partial Match</li>
+                        <li><span className="legend-box status-wrong"></span> Incorrect</li>
+                        <li><span className="legend-box arrow-sample">↑</span> Higher Value</li>
+                        <li><span className="legend-box arrow-sample">↓</span> Lower Value</li>
+                    </ul>
+                </div>
+            )}
         </div>
     );
 }

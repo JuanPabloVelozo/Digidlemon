@@ -7,7 +7,7 @@
     border-radius: 10px;
     padding: 20px;
     max-width: 600px;
-    margin: 0 auto 30px auto;
+    margin: 0 auto 0px auto;
     box-shadow: 0 8px 20px rgba(58, 143, 183, 0.3);
     font-family: 'Orbitron', monospace, sans-serif;
     color: #cce7f0;
@@ -150,3 +150,51 @@
 }
 
 
+.form-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto 30px auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(58, 143, 183, 0.3);
+    gap: 10px;
+}
+
+
+.input-wrapper {
+    position: relative;
+    flex-grow: 1;
+}
+
+
+
+.hints-container {
+    display: flex;
+    margin-top: 1em;
+    max-width: 650px;
+    margin: 0 auto 10px auto;
+}
+.hint-box strong {
+    margin-right: 4em; /* o el valor que te guste */
+}
+
+
+.hint-box {
+    flex: 1;
+    font-family: 'Orbitron', monospace, sans-serif;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #3a8fb7;
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: #cce7f0;
+    font-size: 1.1rem;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    min-height: 2.5em; /* Para mantener altura estable */
+    display: flex;
+    align-items: center;
+}

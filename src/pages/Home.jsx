@@ -10,20 +10,20 @@ export default function Home() {
     return (
         <div className="home-container">
             <h1>Digimondle</h1>
-            <h1>select game mode</h1>
+            <h1>Select Game Mode</h1>
             <br />
             <div className="button-group">
                 <button onClick={() => navigate("/adivina-nombre")}>
-                    <span className="button-icon">🎯</span> Adivina el nombre
+                    <span className="button-icon">🎯</span> Guess the Name
                 </button>
                 <button onClick={() => navigate("/de-quien-es-la-descripcion")}>
-                    <span className="button-icon">📝</span> De quién es la descripción
+                    <span className="button-icon">📝</span> Whose Description Is It?
                 </button>
                 <button onClick={() => navigate("/de-quien-es-el-ataque")}>
-                    <span className="button-icon">⚔️</span> De quién es el ataque
+                    <span className="button-icon">⚔️</span> Whose Attack Is It?
                 </button>
                 <button onClick={() => navigate("/de-quien-silueta")}>
-                    <span className="button-icon">📷</span> De quién es la foto
+                    <span className="button-icon">📷</span> Whose Silhouette Is It?
                 </button>
             </div>
 
@@ -31,7 +31,7 @@ export default function Home() {
                 className="toggle-list-button"
                 onClick={() => setShowList(!showList)}
             >
-                {showList ? "Ocultar Lista de Digimon" : "Mostrar Lista de Digimon"}
+                {showList ? "Hide Digimon List" : "Show Digimon List"}
             </button>
 
             {showList && <DigimonList />}
