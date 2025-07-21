@@ -9,7 +9,6 @@ export default function Home() {
 
     return (
         <div className="home-container">
-            <h1>Digimondle</h1>
             <h1>Select Game Mode</h1>
             <br />
             <div className="button-group">

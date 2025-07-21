@@ -14,7 +14,7 @@ export default function App() {
     return (
         <div className="main-container">
             <div className="logo-container" onClick={() => navigate("/")}>
-                <img src="/images/logo.png" alt="Logo" className="home-logo" />
+                <img src="/images/logo2.png" alt="Logo" className="home-logo" />
             </div>
 
             <Navbar />  {/* Aquí agregas el Navbar */}
