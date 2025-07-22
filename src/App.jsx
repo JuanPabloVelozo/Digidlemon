@@ -13,8 +13,13 @@ export default function App() {
 
     return (
         <div className="main-container">
-            <div className="logo-container" onClick={() => navigate("/")}>
-                <img src="/images/logo2.png" alt="Logo" className="home-logo" />
+            <div className="logo-container">
+                <img
+                    src="/images/logo2.png"
+                    alt="Logo"
+                    className="home-logo"
+                    onClick={() => navigate("/")}
+                />
             </div>
 
             <Navbar />  {/* Aquí agregas el Navbar */}
