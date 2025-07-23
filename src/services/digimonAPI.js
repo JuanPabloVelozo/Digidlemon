@@ -1,21 +1,21 @@
 ﻿export async function fetchDigimonList(page, pageSize) {
     const res = await fetch(`https://digi-api.com/api/v1/digimon?page=${page}&pageSize=${pageSize}`);
-    if (!res.ok) throw new Error("Error al obtener los Digimon");
+    if (!res.ok) throw new Error("Error fetching Digimon");
     const data = await res.json();
 
     const digimonsConNivel = [];
     for (const d of data.content) {
         const detalleRes = await fetch(d.href);
-        if (!detalleRes.ok) throw new Error("Error al obtener detalle del Digimon");
+        if (!detalleRes.ok) throw new Error("Error fetching Digimon details");
         const detalleData = await detalleRes.json();
-        const nivel = detalleData.levels?.[0]?.level || "Desconocido";
-        const atributo = detalleData.attributes?.[0]?.attribute || "Desconocido";
-        const tipo = detalleData.types?.[0]?.type || "Desconocido";
+        const nivel = detalleData.levels?.[0]?.level || "Unknown";
+        const atributo = detalleData.attributes?.[0]?.attribute || "Unknown";
+        const tipo = detalleData.types?.[0]?.type || "Unknown";
         const fields = detalleData.fields || [];
-        const descripcion = detalleData.descriptions?.[1]?.description || "Desconocido";
-        const ataque = detalleData.skills?.[0]?.skill || "Desconocido";  
-        const ataqueEscrip = detalleData.skills?.[0]?.description || "Desconocido";
-        const fecha = detalleData.releaseDate || "Desconocido";
+        const descripcion = detalleData.descriptions?.[1]?.description || "Unknown";
+        const ataque = detalleData.skills?.[0]?.skill || "Unknown";  
+        const ataqueEscrip = detalleData.skills?.[0]?.description || "Unknown";
+        const fecha = detalleData.releaseDate || "Unknown";
         const xAntibody = detalleData.xAntibody ?? false;
         digimonsConNivel.push({
             id: d.id,
@@ -38,17 +38,17 @@
 //cambio f
 export async function fetchDigimonByName(name) {
     const res = await fetch(`https://digi-api.com/api/v1/digimon/${name}`);
-    if (!res.ok) throw new Error("No se encontró el Digimon");
+    if (!res.ok) throw new Error("Digimon not found");
     const data = await res.json();
 
-    const nivel = data.levels?.[0]?.level || "Desconocido";
-    const atributo = data.attributes?.[0]?.attribute || "Desconocido";
-    const tipo = data.types?.[0]?.type || "Desconocido";
+    const nivel = data.levels?.[0]?.level || "Unknown";
+    const atributo = data.attributes?.[0]?.attribute || "Unknown";
+    const tipo = data.types?.[0]?.type || "Unknown";
     const fields = data.fields || [];
-    const descripcion = data.descriptions?.[1]?.description || "Desconocido";
-    const ataque = data.skills?.[0]?.skill || "Desconocido";
-    const ataqueEscrip = data.skills?.[0]?.description || "Desconocido";
-    const fecha = data.releaseDate || "Desconocido";
+    const descripcion = data.descriptions?.[1]?.description || "Unknown";
+    const ataque = data.skills?.[0]?.skill || "Unknown";
+    const ataqueEscrip = data.skills?.[0]?.description || "Unknown";
+    const fecha = data.releaseDate || "Unknown";
     const xAntibody = data.xAntibody ?? false;
 
     return {

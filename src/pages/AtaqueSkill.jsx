@@ -32,7 +32,7 @@ export default function DescripcionGame() {
             try {
                 const digi = JSON.parse(localStorage.getItem("digimonList"));
                 setDigimonsDisponibles(digi);
-                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "targetID#88!beta");
+                const objetivo = seleccionarDigimonObjetivo(digi, fecha, "targetID#88!alphabeta");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
             } catch (err) {
@@ -43,7 +43,7 @@ export default function DescripcionGame() {
             fetchDigimonList(0, 1488)
                 .then((list) => {
                     setDigimonsDisponibles(list);
-                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "targetID#88!beta");
+                    const objetivo = seleccionarDigimonObjetivo(list, fecha, "targetID#88!alphabeta");
                     setDigimonObjetivo(objetivo);
                     setLoading(false);
                 })
@@ -97,7 +97,7 @@ export default function DescripcionGame() {
         if (gameOver) return;
 
         if (!guess.trim()) {
-            setInputError("Por favor, escribe un nombre");
+            setInputError("Please enter a name");
             return;
         }
 
@@ -106,7 +106,7 @@ export default function DescripcionGame() {
         );
 
         if (!found) {
-            setInputError("Digimon no encontrado");
+            setInputError("Digimon not found");
             return;
         }
 
@@ -151,7 +151,7 @@ export default function DescripcionGame() {
         );
 
 
-    if (!digimonObjetivo.description || digimonObjetivo.description === "Desconocido")
+    if (!digimonObjetivo.description || digimonObjetivo.description === "Unknown")
         return <p>El Digimon objetivo no tiene descripción válida.</p>;
 
     return (
@@ -166,12 +166,12 @@ export default function DescripcionGame() {
             <div className="hints-container">
                 <div className="hint-box" style={{ textAlign: "left" }}>
                     <strong>Clue - Type:</strong>{" "}
-                    {failedAttempts >= 5 ? digimonObjetivo.type || "Desconocido" : ""}
+                    {failedAttempts >= 5 ? digimonObjetivo.type || "Unknown" : ""}
                 </div>
 
                 <div className="hint-box" style={{ textAlign: "right" }}>
                     <strong>Clue - Nevel: </strong>{" "}
-                    {failedAttempts >= 10 ? digimonObjetivo.level || "Desconocido" : ""}
+                    {failedAttempts >= 10 ? digimonObjetivo.level || "Unknown" : ""}
                 </div>
             </div>
             {!gameOver && (

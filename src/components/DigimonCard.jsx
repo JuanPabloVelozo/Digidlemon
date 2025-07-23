@@ -9,13 +9,13 @@
                 style={{ objectFit: "contain" }}
             />
             <p>ID: {digimon.id}</p>
-            <p>X-Antibody: {digimon.xAntibody ? "Sí" : "No"}</p>
-            <p>Nivel: {digimon.level}</p>
-            <p>Atributo: {digimon.attribute}</p>
-            <p>Tipo: {digimon.type}</p>
-            <p>Ataque: {digimon.skill}</p>
+            <p>X-Antibody: {digimon.xAntibody ? "Yes" : "No"}</p>
+            <p>Levl: {digimon.level}</p>
+            <p>Attribute: {digimon.attribute}</p>
+            <p>Type: {digimon.type}</p>
+            <p>Main Attack: {digimon.skill}</p>
             <p>{digimon.skillDescrip}</p>
-            <p>Descripcion Digimon:</p><p>{digimon.description}</p>
+            <p>Description:</p><p>{digimon.description}</p>
             <div>
                 <h4>Fields:</h4>
                 {digimon.fields && digimon.fields.length > 0 ? (
@@ -34,11 +34,11 @@
                         ))}
                     </ul>
                 ) : (
-                    <p>No hay fields disponibles.</p>
+                    <p>No fields available.</p>
                 )}
 
             </div>
-            <p>Fecha: {digimon.releaseDate}</p>
+            <p>Date: {digimon.releaseDate}</p>
         </div>
     );
 }

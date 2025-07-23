@@ -113,7 +113,7 @@ export default function DescriptionGame() {
         if (gameOver) return;
 
         if (!guess.trim()) {
-            setInputError("Por favor, escribe un nombre");
+            setInputError("Please enter a name");
             return;
         }
 
@@ -122,7 +122,7 @@ export default function DescriptionGame() {
         );
 
         if (!found) {
-            setInputError("Digimon no encontrado");
+            setInputError("Digimon not found");
             return;
         }
 
@@ -138,7 +138,7 @@ export default function DescriptionGame() {
                 Target Digimon not found.
             </p>
         );
-    if (!digimonObjetivo.description || digimonObjetivo.description === "Desconocido")
+    if (!digimonObjetivo.description || digimonObjetivo.description === "Unknown")
         return <p>The target Digimon has no valid description.</p>;
 
     return (
@@ -153,12 +153,12 @@ export default function DescriptionGame() {
             <div className="hints-container">
                 <div className="hint-box">
                     <strong>Clue - Year appeared:</strong>
-                    <span>{failedAttempts >= 5 ? digimonObjetivo.releaseDate || "Desconocido" : ""}</span>
+                    <span>{failedAttempts >= 5 ? digimonObjetivo.releaseDate || "Unknown" : ""}</span>
                 </div>
 
                 <div className="hint-box">
                     <strong>Clue - main attack:</strong>
-                    <span>{failedAttempts >= 10 ? digimonObjetivo.skill || "Desconocido" : ""}</span>
+                    <span>{failedAttempts >= 10 ? digimonObjetivo.skill || "Unknown" : ""}</span>
                 </div>
             </div>
 

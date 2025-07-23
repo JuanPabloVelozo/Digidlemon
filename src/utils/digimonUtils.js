@@ -17,12 +17,12 @@ export function seleccionarDigimonObjetivo(digimons, fecha, claveSemilla) {
         let index = (entero % digimons.length) - 1;//obtiene un indice del hash
         seleccionado = digimons[index < 0 ? 0 : index];//selecciona el digimon de la lista
         // Verifica que el digimon tenga datos completos
-        if(seleccionado.skillDescrip==="Desconocido" || seleccionado.description==="Desconocido"){
+        if(seleccionado.skillDescrip==="Unknown" || seleccionado.description==="Unknown"){
             cadenaSemilla += cadenaSemilla;//en caso de que el digimon no tenga datos completos, se agrega la semilla a si misma
             validar=true;
         }
     }
-    console.log("Digimon objetivo seleccionado:", seleccionado.name);
+    console.log("Selected target digimon:", seleccionado.name);
 
     return seleccionado;
 }

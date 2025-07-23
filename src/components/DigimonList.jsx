@@ -19,7 +19,7 @@ export default function DigimonList() {
             });
     }, []);
 
-    if (loading) return <p>Cargando Digimons...</p>;
+    if (loading) return <p>Loading Digimons...</p>;
     if (error) return <p>Error: {error}</p>;
 
     return (

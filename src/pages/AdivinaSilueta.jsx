@@ -196,7 +196,7 @@ export default function AdivinaSilueta() {
                 >
                     <img
                         src={digimonObjetivo.image}
-                        alt="Silueta del Digimon"
+                        alt="Digimon silhouette"
                         style={{
                             width: containerSize,
                             height: containerSize,
