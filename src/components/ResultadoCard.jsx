@@ -116,7 +116,7 @@ export default function ResultadoCard({ digimon, comparacion, animate = true }) 
             }}
         >
             <span className="resultado-icon"> </span>
-            <span>{digimon.fields.map((f) => f.field).join(", ") || "Ninguno"}</span>
+            <span>{digimon.fields.map((f) => f.field).join(", ") || "Unknown"}</span>
         </div>,
 
         <div
