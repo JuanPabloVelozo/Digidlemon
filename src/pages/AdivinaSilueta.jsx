@@ -42,7 +42,11 @@ export default function AdivinaSilueta() {
                 } else {
                     const storedResults = JSON.parse(localStorage.getItem("resultsSil"));
                     setGameOver(storedResults.some(r => r.comparacion?.name?.match));
-                    setNivelRevelado(storedResults.find(r => r.comparacion?.name?.match) ? 50 : 0);
+                    if(storedResults.find(r => r.comparacion?.name?.match)){
+                        setNivelRevelado(50);
+                    }else{
+                        setNivelRevelado(storedResults.length > 50 ? 50 : storedResults.length);
+                    }
                     setResults(storedResults);
 
                 }

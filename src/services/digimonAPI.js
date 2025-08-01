@@ -1,4 +1,5 @@
-﻿export async function fetchDigimonList(page, pageSize) {
+﻿
+export async function fetchDigimonList(page, pageSize) {
     const res = await fetch(`https://digi-api.com/api/v1/digimon?page=${page}&pageSize=${pageSize}`);
     if (!res.ok) throw new Error("Error fetching Digimon");
     const data = await res.json();
@@ -12,8 +13,14 @@
         const atributo = detalleData.attributes?.[0]?.attribute || "Unknown";
         const tipo = detalleData.types?.[0]?.type || "Unknown";
         const fields = detalleData.fields || [];
-        const descripcion = detalleData.descriptions?.[1]?.description || "Unknown";
-        const ataque = detalleData.skills?.[0]?.skill || "Unknown";  
+        let descripcion = detalleData.descriptions?.[1]?.description || "Unknown";
+
+        const nombreBase = d.name.replace(/\(.*?\)/g, '').replace(/-.*$/g, '').trim();        
+        if (nombreBase && descripcion.toLowerCase().includes(nombreBase.toLowerCase())) {
+            const regexNombreBase = new RegExp(`\\b${escapeRegExp(nombreBase)}\\b`, "gi");
+            descripcion = descripcion.replace(regexNombreBase, "****");
+        }
+        const ataque = detalleData.skills?.[0]?.skill || "Unknown";
         const ataqueEscrip = detalleData.skills?.[0]?.description || "Unknown";
         const fecha = detalleData.releaseDate || "Unknown";
         const xAntibody = detalleData.xAntibody ?? false;
@@ -35,7 +42,7 @@
     localStorage.setItem("digimonList", JSON.stringify(digimonsConNivel));
     return digimonsConNivel;
 }
-//cambio f
+
 export async function fetchDigimonByName(name) {
     const res = await fetch(`https://digi-api.com/api/v1/digimon/${name}`);
     if (!res.ok) throw new Error("Digimon not found");
@@ -45,7 +52,8 @@ export async function fetchDigimonByName(name) {
     const atributo = data.attributes?.[0]?.attribute || "Unknown";
     const tipo = data.types?.[0]?.type || "Unknown";
     const fields = data.fields || [];
-    const descripcion = data.descriptions?.[1]?.description || "Unknown";
+    let descripcion = data.descriptions?.[1]?.description || "Unknown";
+    descripcion = ocultarNombreEnDescripcion(data.name, descripcion);
     const ataque = data.skills?.[0]?.skill || "Unknown";
     const ataqueEscrip = data.skills?.[0]?.description || "Unknown";
     const fecha = data.releaseDate || "Unknown";
