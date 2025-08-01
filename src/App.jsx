@@ -22,14 +22,13 @@ export default function App() {
                 />
             </div>
 
-            <Navbar />  {/* Aquí agregas el Navbar */}
-
+            <Navbar />  
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/adivina-nombre" element={<AdivinaNombre />} />
-                <Route path="/de-quien-es-la-descripcion" element={<DescripcionGame />} />
-                <Route path="/de-quien-es-el-ataque" element={<AtaqueSkill />} />
-                <Route path="/de-quien-silueta" element={<AdivinaSilueta />} />
+                <Route path="/guessname" element={<AdivinaNombre />} />
+                <Route path="/guessdescription" element={<DescripcionGame />} />
+                <Route path="/guessattack" element={<AtaqueSkill />} />
+                <Route path="/guesssilhouette" element={<AdivinaSilueta />} />
             </Routes>
         </div>
     );

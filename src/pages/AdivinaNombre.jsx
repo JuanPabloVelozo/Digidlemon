@@ -208,7 +208,7 @@ export default function AdivinaNombre() {
                     <h3>Correct!</h3>
                     <div className="success-button-container">
                         <button
-                            onClick={() => navigate("/de-quien-es-la-descripcion")}
+                            onClick={() => navigate("/guessdescription")}
                             className="success-button"
                         >
                             <span className="button-icon">📝</span>

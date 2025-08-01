@@ -230,7 +230,7 @@ export default function DescripcionGame() {
                     <h3>Correct!</h3>
                     <div className="success-button-container">
                         <button
-                            onClick={() => navigate("/de-quien-silueta")}
+                            onClick={() => navigate("/guesssilhouette")}
                             className="success-button"
                         >
                             <span className="button-icon">📷</span>

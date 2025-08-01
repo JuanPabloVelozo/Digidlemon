@@ -13,28 +13,21 @@ export default function Home() {
             <h1>Select Game Mode</h1>
             <br />
             <div className="button-group">
-                <button onClick={() => navigate("/adivina-nombre")}>
+                <button onClick={() => navigate("/guessname")}>
                     <span className="button-icon">🎯</span> Guess the Name
                 </button>
-                <button onClick={() => navigate("/de-quien-es-la-descripcion")}>
+                <button onClick={() => navigate("/guessdescription")}>
                     <span className="button-icon">📝</span> Whose Description Is It?
                 </button>
-                <button onClick={() => navigate("/de-quien-es-el-ataque")}>
+                <button onClick={() => navigate("/guessattack")}>
                     <span className="button-icon">⚔️</span> Whose Attack Is It?
                 </button>
-                <button onClick={() => navigate("/de-quien-silueta")}>
+                <button onClick={() => navigate("/guesssilhouette")}>
                     <span className="button-icon">📷</span> Whose Silhouette Is It?
                 </button>
             </div>
 
-            <button
-                className="toggle-list-button"
-                onClick={() => setShowList(!showList)}
-            >
-                {showList ? "Hide Digimon List" : "Show Digimon List"}
-            </button>
 
-            {showList && <DigimonList />}
             </div>
     );
 }

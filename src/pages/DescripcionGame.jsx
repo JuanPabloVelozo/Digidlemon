@@ -219,7 +219,7 @@ export default function DescriptionGame() {
                     <h3>Correct!</h3>
                     <div className="success-button-container">
                         <button
-                            onClick={() => navigate("/de-quien-es-el-ataque")}
+                            onClick={() => navigate("/guessattack")}
                             className="success-button"
                         >
                             <span className="button-icon">⚔️</span>
