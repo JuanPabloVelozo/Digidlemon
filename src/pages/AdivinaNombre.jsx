@@ -9,6 +9,7 @@ import {
     comparacionCompleta,
     generarConfeti,
     colors,
+    verifyDateFromLocalStorage,
 } from "../utils/digimonUtils";
 
 export default function AdivinaNombre() {
@@ -40,13 +41,24 @@ export default function AdivinaNombre() {
                 setDigimonsDisponibles(list);
                 setDigimonObjetivo(seleccionarDigimonObjetivo(list, fecha, "Digimon#219/dxmon"));
                 setLoading(false);
+                if (verifyDateFromLocalStorage(fecha, "nameGuess")) {
+                    localStorage.setItem("resultsGuess", JSON.stringify([]));
+                    setResults([]);
+                } else {
+                    const storedResults = JSON.parse(localStorage.getItem("resultsGuess"));
+                    setGameOver(storedResults.some(r => r.comparacion?.name?.match));
+                    setResults(storedResults);
+
+                }
             } catch (err) {
                 setError(err.message);
                 setLoading(false);
             }
         }
+        let resultados = localStorage.getItem("results") !== null ? JSON.parse(localStorage.getItem("results")) : [];
+        setResults(resultados);
         loadDigimons();
-    }, [fecha]);
+    }, []);
 
     function launchConfetti() {
         const pieces = generarConfeti(window.innerWidth, 60);
@@ -81,7 +93,7 @@ export default function AdivinaNombre() {
 
         const comparison = comparacionCompleta(found, digimonObjetivo);
         setResults((prev) => [...prev, { digimon: found, comparacion: comparison }]);
-
+        localStorage.setItem("resultsGuess", JSON.stringify([...results, { digimon: found, comparacion: comparison }]));
         if (comparison.isCorrect) {
             launchConfetti();
             setGameOver(true);

@@ -7,6 +7,7 @@ import {
     comparacionBasica,
     generarConfeti,
     colors,
+    verifyDateFromLocalStorage,
 } from "../utils/digimonUtils";
 import "../styles/main.css";
 import ResultadoSimple from "../components/ResultadoSimple";
@@ -36,6 +37,15 @@ export default function DescriptionGame() {
                 const objetivo = seleccionarDigimonObjetivo(digi, fecha, "objCode$135/dgm");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
+                if (verifyDateFromLocalStorage(fecha, "desGuess")) {
+                    localStorage.setItem("resultsDescription", JSON.stringify([]));
+                    setResults([]);
+                } else {
+                    const storedResults = JSON.parse(localStorage.getItem("resultsDescription"));
+                    setGameOver(storedResults.some(r => r.comparacion?.name?.match));
+                    setResults(storedResults);
+
+                }
             } catch (err) {
                 setError(err.message);
                 setLoading(false);
@@ -64,7 +74,7 @@ export default function DescriptionGame() {
     function procesarAdivinanza(found) {
         const comparacion = comparacionBasica(found, digimonObjetivo);
         setResults((prev) => [...prev, { digimon: found, comparacion }]);
-
+        localStorage.setItem("resultsDescription", JSON.stringify([...results, { digimon: found, comparacion: comparacion }]));
         if (comparacion.name.match) {
             launchConfetti();
             setGameOver(true);

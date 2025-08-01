@@ -7,6 +7,7 @@ import {
     comparacionBasica,
     generarConfeti,
     colors,
+    verifyDateFromLocalStorage,
 } from "../utils/digimonUtils";
 import "../styles/main.css";
 import ResultadoSimple from "../components/ResultadoSimple";
@@ -35,10 +36,21 @@ export default function AdivinaSilueta() {
                 const objetivo = seleccionarDigimonObjetivo(digi, fecha, "digiKey@427*alpha");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
+                if (verifyDateFromLocalStorage(fecha, "silGuess")) {
+                    localStorage.setItem("resultsSil", JSON.stringify([]));
+                    setResults([]);
+                } else {
+                    const storedResults = JSON.parse(localStorage.getItem("resultsSil"));
+                    setGameOver(storedResults.some(r => r.comparacion?.name?.match));
+                    setNivelRevelado(storedResults.find(r => r.comparacion?.name?.match) ? 50 : 0);
+                    setResults(storedResults);
+
+                }
             } catch (err) {
                 setError(err.message);
                 setLoading(false);
             }
+            
         } else {
             fetchDigimonList(0, 1488)
                 .then((list) => {
@@ -123,6 +135,7 @@ export default function AdivinaSilueta() {
         const comparacion = comparacionBasica(found, digimonObjetivo);
         setResults((prev) => [...prev, { digimon: found, comparacion }]);
 
+        localStorage.setItem("resultsSil", JSON.stringify([...results, { digimon: found, comparacion: comparacion }]));
         if (comparacion.name.match) {
             setNivelRevelado(50);
             launchConfetti();
@@ -256,7 +269,8 @@ export default function AdivinaSilueta() {
 
             )}
 
-            {gameOver && (
+            {gameOver &&  (
+                
                 <div className="success-message">
                     <h3>Correct!</h3>
                     <div className="success-button-container">

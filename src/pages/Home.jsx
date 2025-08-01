@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DigimonList from "../components/DigimonList";
 import "../styles/home.css";
@@ -6,6 +6,7 @@ import "../styles/home.css";
 export default function Home() {
     const [showList, setShowList] = useState(false);
     const navigate = useNavigate();
+    const [date, setDate]= useState(new Date().toDateString().toLowerCase().trim());
 
     return (
         <div className="home-container">

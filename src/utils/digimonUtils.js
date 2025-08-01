@@ -119,3 +119,14 @@ export function generarConfeti(windowWidth, cantidad = 60) {
         colorIndex: Math.floor(Math.random() * colors.length),
     }));
 }
+
+export function verifyDateFromLocalStorage(fecha, juego) {
+    const date = fecha.toDateString().toLowerCase().trim();
+    const storedDate = new Date(Date.parse(localStorage.getItem(juego))).toDateString().toLowerCase().trim() || null;
+    if(date === null || date!==storedDate ) {
+        localStorage.setItem(juego, date);
+        return true;
+    }
+
+    return false;
+}

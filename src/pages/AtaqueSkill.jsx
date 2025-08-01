@@ -7,6 +7,7 @@ import {
     comparacionBasica,
     generarConfeti,
     colors,
+    verifyDateFromLocalStorage,
 } from "../utils/digimonUtils";
 import "../styles/main.css";
 import ResultadoSimple from "../components/ResultadoSimple";
@@ -35,6 +36,15 @@ export default function DescripcionGame() {
                 const objetivo = seleccionarDigimonObjetivo(digi, fecha, "targetID#88!alphabeta");
                 setDigimonObjetivo(objetivo);
                 setLoading(false);
+                if (verifyDateFromLocalStorage(fecha, "attackGuess")) {
+                    localStorage.setItem("resultsAttack", JSON.stringify([]));
+                    setResults([]);
+                } else {
+                    const storedResults = JSON.parse(localStorage.getItem("resultsAttack"));
+                    setGameOver(storedResults.some(r => r.comparacion?.name?.match));
+                    setResults(storedResults);
+
+                }
             } catch (err) {
                 setError(err.message);
                 setLoading(false);
@@ -118,7 +128,7 @@ export default function DescripcionGame() {
     function procesarAdivinanza(found) {
         const comparacion = comparacionBasica(found, digimonObjetivo);
         setResults((prev) => [...prev, { digimon: found, comparacion }]);
-
+        localStorage.setItem("resultsAttack", JSON.stringify([...results, { digimon: found, comparacion: comparacion }]));
         if (comparacion.name.match) {
             launchConfetti();
             setGameOver(true);
@@ -223,7 +233,7 @@ export default function DescripcionGame() {
                             onClick={() => navigate("/de-quien-silueta")}
                             className="success-button"
                         >
-                            <span className="button-icon">📷</span> 
+                            <span className="button-icon">📷</span>
                         </button>
                     </div>
                 </div>
