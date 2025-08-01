@@ -1,4 +1,14 @@
-﻿
+﻿function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function ocultarNombreEnDescripcion(nombre, descripcion) {
+    const nombreEscapado = escapeRegExp(nombre);
+    // Solo reemplazar el nombre completo con opcionales 's, ’s, s (posesivo/plural)
+    const regex = new RegExp(`\\b${nombreEscapado}('s|’s|s)?\\b`, "gi");
+    return descripcion.replace(regex, "****");
+}
+
 export async function fetchDigimonList(page, pageSize) {
     const res = await fetch(`https://digi-api.com/api/v1/digimon?page=${page}&pageSize=${pageSize}`);
     if (!res.ok) throw new Error("Error fetching Digimon");
