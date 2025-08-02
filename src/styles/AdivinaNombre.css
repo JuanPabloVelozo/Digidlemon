@@ -441,3 +441,13 @@ h2, h3 {
     .input-error-message.visible {
         visibility: visible; /* Muestra el mensaje cuando hay error */
     }
+
+@media (max-width: 768px) {
+    .form-container {
+        max-width: 90%;
+        padding: 15px;
+        gap: 8px;
+        width: 100%; 
+        max-width: 420px;
+    }
+}

@@ -1,6 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
-/* DESCRIPCIÓN CON SCROLL */
 .description-box {
     background: rgba(0, 0, 0, 0.7);
     border: 2px solid #3a8fb7;
@@ -150,20 +149,6 @@
 }
 
 
-.form-container {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto 30px auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(58, 143, 183, 0.3);
-    gap: 10px;
-}
 
 
 .input-wrapper {
