@@ -166,7 +166,7 @@ export default function DescripcionGame() {
 
     return (
         <div className="container" style={{ position: "relative" }}>
-            <h2>¿De quién es el ataque?</h2>
+            <h2>Whose Attack Is It?</h2>
 
             <div className="description-box">
                 <h4>{digimonObjetivo.skill}</h4>
