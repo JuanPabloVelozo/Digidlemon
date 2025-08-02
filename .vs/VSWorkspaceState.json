@@ -6,8 +6,9 @@
     "\\src\\components",
     "\\src\\pages",
     "\\src\\services",
+    "\\src\\styles",
     "\\src\\utils"
   ],
-  "SelectedNode": "\\public\\_redirects",
+  "SelectedNode": "\\src\\styles\\main.css",
   "PreviewInSolutionExplorer": false
 }
