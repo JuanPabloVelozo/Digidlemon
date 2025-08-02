@@ -117,8 +117,8 @@ h1 {
         outline: none;
     }
 
-@media (max-width: 980px) {
+@media (max-width: 480px) {
     .home-container {
-        max-width: 356px;
+        max-width: 350px;
     }
 }

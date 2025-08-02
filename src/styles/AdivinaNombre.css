@@ -442,10 +442,10 @@ h2, h3 {
         visibility: visible; /* Muestra el mensaje cuando hay error */
     }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .form-container {
         padding: 15px;
         gap: 8px;
-        max-width: 356px;
+        max-width: 350px;
     }
 }
